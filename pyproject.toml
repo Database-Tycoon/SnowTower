@@ -63,6 +63,7 @@ packages = ["src"]
 # === HELP & DISCOVERY ===
 # Command discovery and help system
 snowtower = "src.help_cli:main"
+snowtower-banner = "src.banner:main"
 
 # === CORE SNOWDDL OPERATIONS ===
 # Primary commands for infrastructure management
