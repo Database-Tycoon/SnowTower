@@ -30,9 +30,12 @@ BANNER = r"""
                     ╚═══════════════════════════════════╝
 """
 
-BANNER_WITH_VERSION = BANNER + f"""
+BANNER_WITH_VERSION = (
+    BANNER
+    + f"""
                               Version {__version__}
 """
+)
 
 
 def show_banner(with_version: bool = True) -> None:
