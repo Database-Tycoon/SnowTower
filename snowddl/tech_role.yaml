@@ -1,0 +1,315 @@
+BI_WRITER_TECH_ROLE:
+  comment: Technical role for BI developers who need to read from transformed data
+    and write to ANALYTICS_TOOL
+  future_grants:
+    TABLE:SELECT:
+    - PROJ_STRIPE
+    - SOURCE_STRIPE
+    TABLE:SELECT,INSERT,UPDATE,DELETE,TRUNCATE:
+    - ANALYTICS_TOOL
+    VIEW:SELECT:
+    - ANALYTICS_TOOL
+  grants:
+    DATABASE:USAGE:
+    - PROJ_STRIPE
+    - SOURCE_STRIPE
+    DATABASE:USAGE,CREATE SCHEMA:
+    - ANALYTICS_TOOL
+    SCHEMA:USAGE:
+    - SOURCE_STRIPE.STRIPE_WHY
+    WAREHOUSE:USAGE:
+    - TRANSFORMING
+    - ANALYTICS_TOOL
+COPILOT_ACCESS_ROLE:
+  comment: Role for Copilot access and AI integrations
+  grants:
+    WAREHOUSE:USAGE:
+    - MAIN_WAREHOUSE
+DBT_TRAINING:
+  comment: Training role for dbt users and courses
+  grants:
+    WAREHOUSE:USAGE:
+    - TRANSFORMING
+DLT_LOADER_ROLE:
+  comment: Data loading role for DLT operations with SOURCE_STRIPE permissions
+  future_grants:
+    TABLE:SELECT,INSERT,UPDATE,DELETE,TRUNCATE:
+    - SOURCE_STRIPE
+    VIEW:SELECT:
+    - SOURCE_STRIPE
+  grants:
+    DATABASE:USAGE,CREATE SCHEMA:
+    - SOURCE_STRIPE
+    SCHEMA:USAGE:
+    - SOURCE_STRIPE.STRIPE_WHY
+DLT_STRIPE_TECH_ROLE:
+  comment: Dedicated technical role for DLT Stripe pipeline - comprehensive permissions
+    for data loading operations including table stage access via schema owner role.
+  future_grants:
+    FILE_FORMAT:USAGE:
+    - SOURCE_STRIPE
+    - PROJ_STRIPE
+    SEQUENCE:USAGE:
+    - SOURCE_STRIPE
+    - PROJ_STRIPE
+    STAGE:USAGE,READ,WRITE:
+    - SOURCE_STRIPE
+    - PROJ_STRIPE
+    TABLE:SELECT,INSERT,UPDATE,DELETE,TRUNCATE,REFERENCES:
+    - SOURCE_STRIPE
+    - PROJ_STRIPE
+    VIEW:SELECT:
+    - SOURCE_STRIPE
+    - PROJ_STRIPE
+  grants:
+    DATABASE:USAGE,CREATE SCHEMA,MONITOR,MODIFY:
+    - SOURCE_STRIPE
+    - PROJ_STRIPE
+    SCHEMA:USAGE,MODIFY,MONITOR,CREATE TABLE,CREATE VIEW,CREATE FILE FORMAT,CREATE STAGE,CREATE SEQUENCE:
+    - SOURCE_STRIPE.STRIPE_WHY
+    WAREHOUSE:USAGE,MONITOR,OPERATE:
+    - DLT
+ESTUARY:
+  comment: Estuary data integration service role
+  grants:
+    WAREHOUSE:USAGE:
+    - ESTUARY
+FABI_AI:
+  comment: Fabi AI service role for AI/ML operations
+  grants:
+    WAREHOUSE:USAGE:
+    - FABI_AI_WAREHOUSE
+FIVETRAN:
+  comment: Fivetran data integration service role
+  grants:
+    WAREHOUSE:USAGE:
+    - FIVETRAN
+FIVETRAN_ROLE:
+  comment: Alternative Fivetran role for data integration operations
+  future_grants:
+    TABLE:SELECT,INSERT,UPDATE,DELETE,TRUNCATE:
+    - SOURCE_STRIPE
+  grants:
+    DATABASE:USAGE,CREATE SCHEMA:
+    - SOURCE_STRIPE
+    SCHEMA:USAGE:
+    - SOURCE_STRIPE.STRIPE_WHY
+    WAREHOUSE:USAGE:
+    - FIVETRAN
+LIGHTDASH_TECH_ROLE:
+  comment: LightDash BI platform technical role - Read access to source data, full
+    read/write access to BI_TOOL database for dashboard content and analytics
+  future_grants:
+    TABLE:SELECT:
+    - PROJ_STRIPE
+    - SOURCE_STRIPE
+    TABLE:SELECT,INSERT,UPDATE,DELETE,TRUNCATE:
+    - BI_TOOL
+    VIEW:SELECT:
+    - PROJ_STRIPE
+    - SOURCE_STRIPE
+    - BI_TOOL
+  grants:
+    DATABASE:USAGE:
+    - PROJ_STRIPE
+    - SOURCE_STRIPE
+    DATABASE:USAGE,CREATE SCHEMA:
+    - BI_TOOL
+    SCHEMA:USAGE:
+    - SOURCE_STRIPE.STRIPE_WHY
+    WAREHOUSE:USAGE:
+    - BI_TOOL
+MATILLION_ROLE:
+  comment: Matillion ETL processing service role
+  future_grants:
+    TABLE:SELECT,INSERT,UPDATE,DELETE,TRUNCATE:
+    - SOURCE_STRIPE
+    - PROJ_STRIPE
+  grants:
+    DATABASE:USAGE,CREATE SCHEMA:
+    - SOURCE_STRIPE
+    - PROJ_STRIPE
+    SCHEMA:USAGE:
+    - SOURCE_STRIPE.STRIPE_WHY
+    WAREHOUSE:USAGE:
+    - TRANSFORMING
+OMNI_INFRASTRUCTURE_AUTOMATION:
+  comment: Omni infrastructure automation role for automated deployment and management
+  future_grants:
+    TABLE:SELECT,INSERT,UPDATE,DELETE,TRUNCATE:
+    - ANALYTICS_TOOL
+    VIEW:SELECT:
+    - ANALYTICS_TOOL
+    - PROJ_STRIPE
+  grants:
+    DATABASE:USAGE,CREATE SCHEMA,MONITOR:
+    - ANALYTICS_TOOL
+    - PROJ_STRIPE
+    WAREHOUSE:USAGE,MONITOR,OPERATE:
+    - ANALYTICS_TOOL
+    - ADMIN
+OMNI_TECH_ROLE:
+  comment: Omni BI platform technical role - Read access to PROJ_STRIPE, full write
+    access to ANALYTICS_TOOL database
+  future_grants:
+    TABLE:SELECT:
+    - PROJ_STRIPE
+    TABLE:SELECT,INSERT,UPDATE,DELETE,TRUNCATE:
+    - ANALYTICS_TOOL
+    VIEW:SELECT:
+    - ANALYTICS_TOOL
+  grants:
+    DATABASE:USAGE:
+    - PROJ_STRIPE
+    DATABASE:USAGE,CREATE SCHEMA:
+    - ANALYTICS_TOOL
+    WAREHOUSE:USAGE:
+    - ANALYTICS_TOOL
+RECCE_TECH_ROLE:
+  comment: Technical role for Recce dbt validation - Read-only access to PROJ_STRIPE
+    for model validation and data quality testing
+  future_grants:
+    TABLE:SELECT:
+    - PROJ_STRIPE
+    VIEW:SELECT:
+    - PROJ_STRIPE
+  grants:
+    DATABASE:USAGE:
+    - PROJ_STRIPE
+    WAREHOUSE:USAGE:
+    - RECCE
+DBT_STRIPE_ROLE:
+  comment: dbt service role for Stripe transformations - Read-only access to SOURCE_STRIPE
+    (DLT-owned source data), full read/write access to PROJ_STRIPE and ANALYTICS_TOOL for
+    transformed models and analytics
+  future_grants:
+    TABLE:SELECT:
+    - SOURCE_STRIPE
+    TABLE:SELECT,INSERT,UPDATE,DELETE,TRUNCATE:
+    - PROJ_STRIPE
+    - ANALYTICS_TOOL
+    VIEW:SELECT:
+    - SOURCE_STRIPE
+    - PROJ_STRIPE
+    - ANALYTICS_TOOL
+  grants:
+    DATABASE:USAGE,CREATE SCHEMA:
+    - SOURCE_STRIPE
+    - PROJ_STRIPE
+    - ANALYTICS_TOOL
+    SCHEMA:USAGE:
+    - SOURCE_STRIPE.STRIPE_WHY
+    SCHEMA:USAGE,MODIFY,MONITOR,CREATE TABLE,CREATE VIEW,CREATE FUNCTION,CREATE PROCEDURE,CREATE FILE FORMAT,CREATE STAGE,CREATE SEQUENCE:
+    - PROJ_STRIPE.PROJ_STRIPE
+    WAREHOUSE:USAGE:
+    - TRANSFORMING
+SIGMA_ROLE:
+  comment: Sigma BI analytics service role
+  future_grants:
+    TABLE:SELECT:
+    - PROJ_STRIPE
+    - ANALYTICS_TOOL
+    VIEW:SELECT:
+    - PROJ_STRIPE
+    - ANALYTICS_TOOL
+  grants:
+    DATABASE:USAGE:
+    - PROJ_STRIPE
+    - ANALYTICS_TOOL
+    WAREHOUSE:USAGE:
+    - ANALYTICS_TOOL
+SNOWTOWER_USERS:
+  comment: SnowTower application users role
+  grants:
+    WAREHOUSE:USAGE:
+    - MAIN_WAREHOUSE
+STREAMLIT_ROLE:
+  comment: Streamlit applications service role
+  future_grants:
+    TABLE:SELECT:
+    - PROJ_STRIPE
+    VIEW:SELECT:
+    - PROJ_STRIPE
+  grants:
+    DATABASE:USAGE:
+    - PROJ_STRIPE
+    WAREHOUSE:USAGE:
+    - STREAMLIT_VIEWER_WH
+STREAMLIT_TOWERAPP_ROLE:
+  comment: SnowTower Streamlit application specific role
+  future_grants:
+    TABLE:SELECT:
+    - PROJ_STRIPE
+    - SOURCE_STRIPE
+    VIEW:SELECT:
+    - PROJ_STRIPE
+    - SOURCE_STRIPE
+  grants:
+    DATABASE:USAGE:
+    - PROJ_STRIPE
+    - SOURCE_STRIPE
+    SCHEMA:USAGE:
+    - SOURCE_STRIPE.STRIPE_WHY
+    WAREHOUSE:USAGE:
+    - STREAMLIT_VIEWER_WH
+    - MAIN_WAREHOUSE
+STREAMLIT_VIEWER:
+  comment: Read-only infrastructure viewer role for Streamlit app users - provides
+    minimal metadata access without data privileges
+  grants:
+    WAREHOUSE:USAGE:
+    - STREAMLIT_VIEWER_WH
+STRIPE:
+  comment: Stripe data access role with read permissions to SOURCE_STRIPE and write permissions to PROJ_STRIPE
+  future_grants:
+    TABLE:SELECT:
+    - SOURCE_STRIPE
+    - PROJ_STRIPE
+    VIEW:SELECT:
+    - SOURCE_STRIPE
+    - PROJ_STRIPE
+  grants:
+    DATABASE:USAGE,CREATE SCHEMA:
+    - SOURCE_STRIPE
+    - PROJ_STRIPE
+    SCHEMA:USAGE:
+    - SOURCE_STRIPE.STRIPE_WHY
+TOBIKO_CLOUD:
+  comment: Tobiko Cloud service role
+  grants:
+    WAREHOUSE:USAGE:
+    - ADMIN
+COMPANY_USERS:
+  comment: SnowTower team members role with development database access
+  future_grants:
+    STAGE:USAGE,READ,WRITE:
+    - DEV_ALICE
+    - DEV_CAROL
+    - DEV_DAVE
+    - DEV_EVE
+    - DEV_GRACE
+    - DEV_BOB
+    - DEV_FRANK
+    TABLE:SELECT,INSERT,UPDATE,DELETE,TRUNCATE:
+    - DEV_ALICE
+    - DEV_CAROL
+    - DEV_DAVE
+    - DEV_EVE
+    - DEV_GRACE
+    - DEV_BOB
+    - DEV_FRANK
+  grants:
+    DATABASE:USAGE,CREATE SCHEMA:
+    - DEV_ALICE
+    - DEV_CAROL
+    - DEV_DAVE
+    - DEV_EVE
+    - DEV_GRACE
+    - DEV_BOB
+    - DEV_FRANK
+    SCHEMA:USAGE:
+    - SOURCE_STRIPE.STRIPE_WHY
+    SCHEMA:USAGE,MODIFY,MONITOR,CREATE TABLE,CREATE VIEW,CREATE FUNCTION,CREATE PROCEDURE,CREATE FILE FORMAT,CREATE STAGE,CREATE SEQUENCE:
+    - DEV_ALICE.STRIPE_WHY
+    WAREHOUSE:USAGE:
+    - MAIN_WAREHOUSE

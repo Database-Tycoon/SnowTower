@@ -1,0 +1,75 @@
+ADMIN:
+  auto_suspend: 60
+  comment: Administrative warehouse for admin operations
+  size: X-Small
+ANALYST_WH:
+  auto_suspend: 60
+  comment: Warehouse for analyst workloads
+  resource_monitor: ANALYST_WAREHOUSE_MONITOR
+  size: X-Small
+MAIN_WAREHOUSE:
+  auto_suspend: 60
+  comment: SnowTower team warehouse for data work and analytics
+  resource_monitor: DEV_ENVIRONMENT_MONITOR
+  size: X-Small
+DEV_FRANK_WH:
+  auto_suspend: 60
+  comment: Polo's dedicated development warehouse for data engineering work
+  size: X-Small
+DEV_WH:
+  auto_suspend: 60
+  comment: Development warehouse for personal dev environments
+  size: X-Small
+DLT:
+  auto_suspend: 60
+  comment: DLT data loading and pipeline operations
+  resource_monitor: DLT_PIPELINE_MONITOR
+  size: X-Small
+ESTUARY:
+  auto_suspend: 60
+  comment: Estuary data integration warehouse
+  size: X-Small
+FABI_AI_WAREHOUSE:
+  auto_suspend: 60
+  comment: Fabi AI workloads and model training
+  size: X-Small
+FIVETRAN:
+  auto_suspend: 60
+  comment: Fivetran data integration warehouse
+  size: X-Small
+BI_TOOL:
+  auto_suspend: 60
+  comment: LightDash BI platform warehouse for analytics and dashboard queries
+  size: X-Small
+ANALYTICS_TOOL:
+  auto_suspend: 60
+  comment: Omni BI platform warehouse for analytics and reporting queries
+  size: X-Small
+RECCE:
+  auto_suspend: 60
+  comment: Recce dbt validation and data quality testing warehouse
+  size: X-Small
+DBT_STRIPE_WH:
+  auto_suspend: 60
+  comment: dbt Stripe transformation operations
+  size: X-Small
+STREAMLIT_VIEWER_WH:
+  auto_suspend: 60
+  comment: Dedicated warehouse for Streamlit viewer metadata queries - minimal resources
+    for cost efficiency
+  max_cluster_count: 1
+  min_cluster_count: 1
+  resource_monitor: SNOWTOWER_MONITOR
+  size: X-Small
+STRIPE:
+  auto_suspend: 60
+  comment: Stripe data processing and analytics
+  size: X-Small
+TRANSFORMING:
+  auto_suspend: 60
+  comment: General data transformation warehouse
+  size: X-Small
+TRANSFORMING_USER:
+  auto_suspend: 60
+  comment: Heather's training transformation warehouse
+  size: X-Small

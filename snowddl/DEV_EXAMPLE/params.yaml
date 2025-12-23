@@ -1,0 +1,7 @@
+# Example Developer Sandbox Database
+#
+# Each developer can have their own sandbox database for experimentation.
+# Copy this directory and rename for each developer: DEV_ALICE, DEV_BOB, etc.
+
+is_sandbox: true
+owner: DEV_EXAMPLE__OWNER__D_ROLE

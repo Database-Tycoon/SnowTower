@@ -1,0 +1,126 @@
+ADMIN_ROLE:
+  comment: Administrative business role with full access
+  tech_roles:
+  - STREAMLIT_VIEWER
+  - DLT_LOADER_ROLE
+  - SNOWTOWER_USERS
+  - STRIPE
+  - COMPANY_USERS
+  warehouse_usage:
+  - ADMIN
+  - MAIN_WAREHOUSE
+AI_ML_ROLE:
+  comment: Business role for AI and ML workloads
+  tech_roles:
+  - FABI_AI
+  - COPILOT_ACCESS_ROLE
+  warehouse_usage:
+  - FABI_AI_WAREHOUSE
+BI_DEVELOPER_ROLE:
+  comment: Business role for BI developers who create models and dashboards in ANALYTICS_TOOL
+    using dbt transformations
+  tech_roles:
+  - STREAMLIT_VIEWER
+  - DBT_STRIPE_ROLE
+  - BI_WRITER_TECH_ROLE
+  - SIGMA_ROLE
+  warehouse_usage:
+  - TRANSFORMING
+  - ANALYTICS_TOOL
+  - MAIN_WAREHOUSE
+DATA_INTEGRATION_ROLE:
+  comment: Business role for data integration services
+  tech_roles:
+  - ESTUARY
+  - FIVETRAN
+  - FIVETRAN_ROLE
+  - MATILLION_ROLE
+  - DLT_LOADER_ROLE
+  warehouse_usage:
+  - ESTUARY
+  - FIVETRAN
+  - TRANSFORMING
+  - STRIPE
+DBT_ANALYTICS_ROLE:
+  comment: Business role for dbt and analytics work - includes schema owner access
+    for PROJ_STRIPE to modify existing tables/views
+  tech_roles:
+  - DBT_STRIPE_ROLE
+  - DBT_TRAINING
+  schema_owner:
+  - PROJ_STRIPE.PROJ_STRIPE
+  warehouse_usage:
+  - MAIN_WAREHOUSE
+  - TRANSFORMING
+DLT_STRIPE_ROLE:
+  comment: Dedicated business role for DLT Stripe data pipeline - includes schema
+    owner access for table stage operations
+  tech_roles:
+  - DLT_STRIPE_TECH_ROLE
+  schema_owner:
+  - SOURCE_STRIPE.STRIPE_WHY
+  warehouse_usage:
+  - DLT
+INFRASTRUCTURE_AUTOMATION_ROLE:
+  comment: Business role for infrastructure automation and deployment services
+  tech_roles:
+  - OMNI_INFRASTRUCTURE_AUTOMATION
+  - TOBIKO_CLOUD
+  warehouse_usage:
+  - ANALYTICS_TOOL
+  - ADMIN
+LIGHTDASH_BUSINESS_ROLE:
+  comment: Business role for LightDash BI platform - analytics and dashboard access
+    with read/write to BI_TOOL database
+  tech_roles:
+  - LIGHTDASH_TECH_ROLE
+  warehouse_usage:
+  - BI_TOOL
+OMNI_BUSINESS_ROLE:
+  comment: Business role for Omni BI platform - analytics and reporting access
+  tech_roles:
+  - OMNI_TECH_ROLE
+  warehouse_usage:
+  - ANALYTICS_TOOL
+RECCE_BUSINESS_ROLE:
+  comment: Business role for Recce dbt validation and data quality testing
+  tech_roles:
+  - RECCE_TECH_ROLE
+  warehouse_usage:
+  - RECCE
+SERVICE_ACCOUNTS_ROLE:
+  comment: Business role for service accounts and integrations
+  tech_roles:
+  - TOBIKO_CLOUD
+  warehouse_usage:
+  - ADMIN
+STREAMLIT_APPS_ROLE:
+  comment: Business role for Streamlit applications and services
+  tech_roles:
+  - STREAMLIT_ROLE
+  - STREAMLIT_TOWERAPP_ROLE
+  - STREAMLIT_VIEWER
+  warehouse_usage:
+  - STREAMLIT_VIEWER_WH
+  - MAIN_WAREHOUSE
+TRAINING_ROLE:
+  comment: Business role for training and development users
+  tech_roles:
+  - DBT_TRAINING
+  warehouse_usage:
+  - TRANSFORMING_USER
+  - TRANSFORMING
+COMPANY_USERS:
+  comment: Business role for SnowTower team members doing data work
+  tech_roles:
+  - STREAMLIT_VIEWER
+  - DLT_LOADER_ROLE
+  - STRIPE
+  - COMPANY_USERS
+  - DBT_STRIPE_ROLE
+  warehouse_usage:
+  - MAIN_WAREHOUSE
+  - DLT
+  - STRIPE
+  - TRANSFORMING
+  - DEV_WH

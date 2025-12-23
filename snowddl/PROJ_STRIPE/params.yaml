@@ -1,0 +1,2 @@
+comment: Project database for processed Stripe analytics and reporting - Full sandbox for dbt transformations managed by DBT_ANALYTICS_ROLE
+is_sandbox: true

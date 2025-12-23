@@ -1,0 +1,161 @@
+[project]
+name = "snowtower"
+version = "0.1.0"
+description = "SnowTower - Snowflake Infrastructure Management Platform using Infrastructure as Code"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    # Core SnowDDL dependencies
+    "snowddl>=0.50.0",
+    "pyyaml>=6.0.0",
+    "rich>=13.0.0",
+    "click>=8.1.0",
+    "snowflake-cli-labs>=3.7.1",
+    "python-dotenv>=1.0.0",
+    "cryptography>=41.0.0",
+    "pydantic>=2.11.0",
+    "ipaddress>=1.0.0;python_version<'3.3'",
+    # Snowflake connectivity
+    "snowflake-connector-python[pandas]>=3.16.0",
+    "tabulate>=0.9.0",
+    "toml>=0.10.2",
+    # Additional dependencies
+    "requests>=2.31.0",
+    "pandas>=2.0.0",
+    "pyarrow<19.0.0",
+    "httpx>=0.25.0",
+    "snowflake-snowpark-python>=1.16.0",
+    "pre-commit>=4.3.0",
+]
+
+[tool.uv]
+package = true
+
+[dependency-groups]
+dev = [
+    "pytest>=8.2.2",
+    "pytest-cov>=4.0.0",           # Coverage reporting
+    "pytest-mock>=3.10.0",         # Mocking support
+    "pytest-timeout>=2.1.0",       # Test timeouts
+    "pytest-xdist>=3.0.0",         # Parallel test execution
+    "pytest-benchmark>=4.0.0",     # Performance testing
+    "hypothesis>=6.0.0",           # Property-based testing
+    "faker>=18.0.0",               # Test data generation
+    "ruff>=0.4.10",
+    # Documentation dependencies
+    "mkdocs>=1.6.0",
+    "mkdocs-material>=9.5.29",
+    "pymdown-extensions>=10.8.1",
+    "mkdocs-minify-plugin>=0.8.0",
+    # API documentation generation
+    "mkdocstrings[python]>=0.24.0",
+    "mkdocstrings-python>=1.8.0",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src"]
+
+[project.scripts]
+# === HELP & DISCOVERY ===
+# Command discovery and help system
+snowtower = "src.help_cli:main"
+
+# === CORE SNOWDDL OPERATIONS ===
+# Primary commands for infrastructure management
+snowddl-plan = "src.management_cli:snowddl_plan"
+snowddl-apply = "src.management_cli:snowddl_apply"
+snowddl-validate = "src.management_cli:snowddl_validate"
+snowddl-diff = "src.management_cli:snowddl_diff"
+deploy-safe = "scripts.deploy_safe:main"
+
+# === USER MANAGEMENT ===
+# Consolidated user management (PRIMARY COMMAND)
+manage-users = "src.user_management.cli:main"
+
+# === RESOURCE MANAGEMENT ===
+# Commands for managing Snowflake resources
+manage-warehouses = "src.management_cli:warehouses"
+manage-costs = "src.management_cli:costs"
+manage-security = "src.management_cli:security"
+manage-backup = "src.management_cli:backup"
+apply-schema-grants = "src.management_cli:apply_schema_grants"
+validate-schema-grants = "src.management_cli:validate_schema_grants"
+test-schema-mgmt = "scripts.test_schema_management:main"
+
+# === MONITORING & OBSERVABILITY ===
+# System monitoring and observability commands
+monitor-health = "src.management_cli:monitor_health"
+monitor-audit = "src.management_cli:monitor_audit"
+monitor-metrics = "src.management_cli:monitor_metrics"
+
+# === UTILITIES ===
+# Helper commands for various operations
+util-generate-key = "src.user_management.cli:generate_fernet_key"
+util-diagnose-auth = "src.diagnose_auth:main"
+util-fix-auth = "src.fix_auth:main"
+generate-rsa-batch = "scripts.generate_rsa_keys_batch:main"
+
+# === AUTOMATION ===
+# GitHub issue to SnowDDL automation with PR creation
+github-to-snowddl = "src.management_cli:github_to_snowddl"
+process-access-request = "src.management_cli:process_access_request"
+
+# === DOCUMENTATION ===
+# Commands for documentation management
+docs-serve = "src.docs_commands:serve_docs"
+docs-build = "src.docs_commands:build_docs"
+
+# === ADVANCED/SPECIALIZED COMMANDS ===
+# Less commonly used commands (kept for specific use cases)
+user-password = "src.management_cli:update_user_password"
+app-enhanced = "scripts.run_enhanced_app:main"
+monitor-logs = "src.management_cli:monitor_logs"
+docs-api = "src.docs_commands:generate_api_docs"
+docs-serve-api = "src.docs_commands:serve_api_docs"
+validate-streamlit = "src.management_cli:validate_streamlit"
+
+# === REMOVED COMMANDS (Missing Implementations) ===
+# The following commands were removed because their implementations don't exist:
+# - test-s3-deployment (missing scripts.test_s3_deployment)
+# - sync-s3-configs (missing scripts.sync_s3_to_git)
+# - test-streamlit-local (missing implementation)
+# - test-streamlit-deployed (missing implementation)
+# - deploy-streamlit-safe (missing implementation)
+# - detect-streamlit-errors (missing scripts.common_streamlit_errors)
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0.0",
+    "pytest-cov>=4.0.0",
+    "pytest-mock>=3.10.0",
+    "pytest-timeout>=2.1.0",
+    "black>=23.0.0",
+    "ruff>=0.1.0"
+]
+
+test = [
+    "pytest>=7.0.0",
+    "pytest-cov>=4.0.0",
+    "pytest-mock>=3.10.0",
+    "pytest-timeout>=2.1.0"
+]
+
+docs = [
+    "mkdocs>=1.5.0",
+    "mkdocs-material>=9.0.0",
+    "mkdocs-material-extensions>=1.3.0",
+    "pymdown-extensions>=10.0.0",
+    "mkdocs-minify-plugin>=0.8.0",
+]
+
+# Web interface (future release)
+web = [
+    "streamlit>=1.29.0",
+    "plotly>=5.17.0",
+]
+
+# UV tool configuration - scripts are handled via project.scripts above

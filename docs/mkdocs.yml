@@ -1,0 +1,221 @@
+# MkDocs Configuration for SnowTower-SnowDDL Documentation
+
+# Project Information
+site_name: SnowTower-SnowDDL Documentation
+site_description: Infrastructure as Code for Snowflake using SnowDDL
+site_author: SnowTower Team
+site_url: https://snowtower-snowddl.local
+
+# Repository
+repo_name: snowtower-snowddl
+repo_url: https://github.com/Database-Tycoon/snowtower
+edit_uri: edit/main/site_docs/
+
+# Documentation directory (relative to config file location)
+docs_dir: ../site_docs
+site_dir: ../site
+
+# Theme Configuration
+theme:
+  name: material
+  language: en
+
+  # Theme Features
+  features:
+    - announce.dismiss
+    - content.action.edit
+    - content.action.view
+    - content.code.annotate
+    - content.code.copy
+    - content.tabs.link
+    - content.tooltips
+    - header.autohide
+    - navigation.expand
+    - navigation.footer
+    - navigation.indexes
+    - navigation.instant
+    - navigation.instant.prefetch
+    - navigation.instant.progress
+    - navigation.sections
+    - navigation.tabs
+    - navigation.tabs.sticky
+    - navigation.top
+    - navigation.tracking
+    - search.highlight
+    - search.share
+    - search.suggest
+    - toc.follow
+    - toc.integrate
+
+  # Color Palette
+  palette:
+    - media: "(prefers-color-scheme)"
+      toggle:
+        icon: material/brightness-auto
+        name: Switch to light mode
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: blue
+      accent: light-blue
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: blue
+      accent: light-blue
+      toggle:
+        icon: material/brightness-4
+        name: Switch to system preference
+
+  # Fonts
+  font:
+    text: Roboto
+    code: Roboto Mono
+
+  # Icons
+  icon:
+    logo: material/snowflake
+    repo: fontawesome/brands/github
+
+# Extensions
+markdown_extensions:
+  - abbr
+  - admonition
+  - attr_list
+  - def_list
+  - footnotes
+  - md_in_html
+  - toc:
+      permalink: true
+  - pymdownx.arithmatex:
+      generic: true
+  - pymdownx.betterem:
+      smart_enable: all
+  - pymdownx.caret
+  - pymdownx.details
+  - pymdownx.emoji:
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.keys
+  - pymdownx.magiclink:
+      repo_url_shorthand: true
+      user: Database-Tycoon
+      repo: snowtower-snowddl
+  - pymdownx.mark
+  - pymdownx.smartsymbols
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.tilde
+
+# Plugins
+plugins:
+  - search:
+      separator: '[\s\-,:!=\[\]()"`/]+|\.(?!\d)|&[lg]t;|(?!\b)(?=[A-Z][a-z])'
+  - mkdocstrings:
+      enabled: true
+      default_handler: python
+      handlers:
+        python:
+          paths: ["../src"]
+          options:
+            show_source: true
+            show_root_heading: true
+            show_root_full_path: false
+            show_object_full_path: false
+            show_symbol_type_heading: true
+            show_symbol_type_toc: true
+            group_by_category: true
+            heading_level: 2
+            show_signature_annotations: true
+            separate_signature: true
+            show_bases: true
+            show_inheritance_diagram: false
+            merge_init_into_class: true
+            docstring_style: google
+            docstring_section_style: table
+            members_order: source
+            filters: ["!^_"]
+            show_if_no_docstring: false
+  - minify:
+      minify_html: true
+
+# Extra Configuration
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/Database-Tycoon/snowtower
+    - icon: fontawesome/brands/docker
+      link: https://hub.docker.com/r/snowtower/snowddl
+
+  version:
+    provider: mike
+
+# Extra CSS
+extra_css:
+  - stylesheets/extra.css
+
+# Extra JavaScript
+extra_javascript:
+  - https://polyfill.io/v3/polyfill.min.js?features=es6
+  - javascripts/extra.js
+
+# Navigation Structure
+nav:
+  - Home: index.md
+  - Daily Tasks:
+    - Quick Reference: quickstart.md
+    - Common Recipes: standard-recipes.md
+    - User Management: new-user-self-service.md
+    - Developer Onboarding: new-developer-recipe.md
+  - Working with YAML:
+    - Configuration Overview: configuration/overview.md
+    - Users & Access: configuration/user.md
+    - Roles & Permissions: configuration/roles.md
+    - Warehouses: configuration/warehouse.md
+    - Security Policies: configuration/security-policies.md
+  - Security & Compliance:
+    - Security Overview: security/overview.md
+    - Password Management: password-management.md
+    - MFA Setup: security/mfa-compliance.md
+    - RSA Keys: security/rsa-key-setup.md
+    - Lockout Prevention: security/lockout-prevention.md
+  - Operations:
+    - Cost Monitoring: cost-management/cost-monitoring.md
+    - Service Accounts: snowddl-service-account.md
+    - Common Scenarios: scenarios/supported-scenarios.md
+  - Troubleshooting:
+    - Common Issues: troubleshooting/common-issues.md
+    - Error Messages: troubleshooting/error-messages.md
+  - Reference:
+    - Command Reference: reference.md
+    - Infrastructure Philosophy: infrastructure-philosophy.md
+    - Changelog: changelog.md
+  - API Reference:
+    - Overview: api/index.md
+    - Getting Started: api/getting-started.md
+    - Core Classes:
+      - Base Classes: api/base.md
+      - Account Objects: api/account-objects.md
+      - Project Management: api/project.md
+    - Validation: api/validation.md
+    - Mixins: api/mixins.md
+    - Types: api/types.md
+    - Exceptions: api/exceptions.md
+    - Examples: api/examples.md
+  - Advanced:
+    - CI/CD Setup: deployment/ci-cd-setup.md
+    - Deployment Guide: deployment/deployment-guide.md
+    - Vision to Implementation: vision-to-implementation.md

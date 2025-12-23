@@ -1,0 +1,22 @@
+bi_tool_network_policy:
+  allowed_ip_list:
+  - 198.51.100.1/32
+  - 198.51.100.2/32
+  - 192.0.2.10/32
+  comment: Restrict LightDash BI platform service account to approved LightDash IP
+    addresses (US and EU regions)
+analytics_network_policy:
+  allowed_ip_list:
+  - 3.211.115.21/32
+  - 34.215.77.3/32
+  - 44.199.154.198/32
+  - 52.205.119.255/32
+  - 52.33.167.28/32
+  - 54.172.168.164/32
+  - 54.213.140.155/32
+  - 54.213.219.131/32
+  comment: Restrict Omni BI platform service account to approved Omni IP addresses
+company_network_policy:
+  allowed_ip_list:
+  - 192.0.2.10/32
+  comment: Restrict human user access to approved IP address only

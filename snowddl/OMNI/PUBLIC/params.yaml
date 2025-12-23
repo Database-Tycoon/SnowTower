@@ -1,0 +1,3 @@
+comment: "Omni Analytics platform schema - Contains business intelligence and analytics data"
+retention_time: 7
+is_transient: false

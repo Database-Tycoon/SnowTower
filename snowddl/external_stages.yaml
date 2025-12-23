@@ -1,0 +1,25 @@
+SNOWTOWER_INTERNAL_STAGE:
+  comment: Internal Snowflake stage for temporary files and local operations
+SNOWTOWER_S3_BACKUP_STAGE:
+  comment: S3 external stage for SnowTower configuration backups and snapshots
+  storage_integration: SNOWTOWER_S3_INTEGRATION
+  url: s3://your-company-bucket/backups/
+SNOWTOWER_S3_DEPLOYMENT_STAGE:
+  comment: S3 external stage for SnowTower YAML deployment files
+  storage_integration: SNOWTOWER_S3_INTEGRATION
+  url: s3://your-company-bucket/yaml-configs/
+SNOWTOWER_S3_LOG_STAGE:
+  comment: S3 external stage for SnowTower deployment logs and audit trails
+  storage_integration: SNOWTOWER_S3_INTEGRATION
+  url: s3://your-company-bucket/logs/
+file_formats:
+  SNOWTOWER_LOG_FORMAT:
+    comment: File format for SnowTower deployment logs and metadata
+    compression: GZIP
+    type: JSON
+  SNOWTOWER_YAML_FORMAT:
+    comment: File format for SnowTower YAML configurations stored as JSON
+    compression: AUTO
+    date_format: YYYY-MM-DD
+    timestamp_format: YYYY-MM-DD HH24:MI:SS
+    type: JSON

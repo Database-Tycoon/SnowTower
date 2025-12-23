@@ -1,0 +1,2 @@
+comment: Source database for raw Stripe data ingestion
+is_sandbox: true

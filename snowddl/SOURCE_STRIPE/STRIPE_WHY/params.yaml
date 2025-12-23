@@ -1,0 +1,2 @@
+comment: DLT-managed Stripe data schema - Contains raw Stripe webhook and API data
+retention_time: 1  # 1 day retention for raw source data

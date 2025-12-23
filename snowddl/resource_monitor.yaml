@@ -1,0 +1,54 @@
+ANALYST_WAREHOUSE_MONITOR:
+  credit_quota: 100
+  frequency: MONTHLY
+  triggers:
+    75: NOTIFY
+    90: NOTIFY
+    100: SUSPEND
+DEV_ENVIRONMENT_MONITOR:
+  credit_quota: 500
+  frequency: MONTHLY
+  triggers:
+    60: NOTIFY
+    80: NOTIFY
+    95: SUSPEND
+DLT_PIPELINE_MONITOR:
+  credit_quota: 300
+  frequency: MONTHLY
+  triggers:
+    80: NOTIFY
+    95: NOTIFY
+    100: SUSPEND
+EMERGENCY_COST_CONTROL:
+  credit_quota: 1500
+  frequency: MONTHLY
+  triggers:
+    95: NOTIFY
+    100: SUSPEND
+PIPELINE_MONITOR:
+  credit_quota: 500
+  frequency: MONTHLY
+  triggers:
+    70: NOTIFY
+    85: NOTIFY
+    98: SUSPEND
+SNOWTOWER_ACCOUNT_MONITOR:
+  credit_quota: 1000
+  frequency: MONTHLY
+  triggers:
+    50: NOTIFY
+    75: NOTIFY
+    90: NOTIFY
+    100: SUSPEND
+SNOWTOWER_MONITOR:
+  credit_quota: 50
+  frequency: MONTHLY
+  triggers:
+    75: NOTIFY
+    90: NOTIFY
+    100: SUSPEND
+WEEKLY_SPENDING_MONITOR:
+  credit_quota: 150
+  frequency: WEEKLY
+  triggers:
+    80: NOTIFY

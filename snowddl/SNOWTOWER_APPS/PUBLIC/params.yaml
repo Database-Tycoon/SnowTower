@@ -1,0 +1,3 @@
+comment: "SnowTower Streamlit apps schema - Contains app configuration and metadata"
+retention_time: 7
+is_transient: false

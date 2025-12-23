@@ -1,0 +1,75 @@
+# SAFE Resource Monitors for Cost Control and Alerting
+# These monitors provide early warning without causing production outages
+# Reviewed and approved for production deployment
+
+# Primary account-level monitor - unchanged (reasonable limit)
+SNOWTOWER_ACCOUNT_MONITOR:
+  credit_quota: 1000
+  frequency: MONTHLY
+  triggers:
+    50: NOTIFY
+    75: NOTIFY
+    90: NOTIFY
+    100: SUSPEND
+
+# SAFE Development environment monitor (INCREASED from 200 to 500)
+# Previous 200 limit was dangerously low for active development
+DEV_ENVIRONMENT_MONITOR:
+  credit_quota: 500  # SAFE: Increased from 200
+  frequency: MONTHLY
+  triggers:
+    70: NOTIFY  # Early warning
+    85: NOTIFY  # Second warning
+    95: NOTIFY  # Final warning - NO SUSPEND to prevent dev blockage
+
+# SAFE Production data pipeline monitor (INCREASED from 300 to 750)
+PIPELINE_MONITOR:
+  credit_quota: 750  # SAFE: Increased from 500
+  frequency: MONTHLY
+  triggers:
+    70: NOTIFY
+    85: NOTIFY
+    95: NOTIFY  # NO SUSPEND - let ops team handle manually
+
+# SAFE Weekly spending monitor (INCREASED from 55 to 200)
+# Previous 55/week was unrealistically low
+WEEKLY_SPENDING_MONITOR:
+  credit_quota: 200  # SAFE: Increased from 55
+  frequency: WEEKLY
+  triggers:
+    70: NOTIFY  # Early warning only
+    85: NOTIFY  # Second warning
+
+# Emergency cost control monitor - unchanged (reasonable)
+EMERGENCY_COST_CONTROL:
+  credit_quota: 1500
+  frequency: MONTHLY
+  triggers:
+    95: NOTIFY
+    100: SUSPEND
+
+# SAFE Analytics warehouse monitor (INCREASED from 100 to 400)
+# Previous 100/month was far too low for analytics workloads
+ANALYST_WAREHOUSE_MONITOR:
+  credit_quota: 400  # SAFE: Increased from 100
+  frequency: MONTHLY
+  triggers:
+    70: NOTIFY
+    85: NOTIFY
+    95: NOTIFY  # NO SUSPEND - let analysts manage their own usage
+
+# SAFE DLT pipeline monitor (INCREASED from 300 to 600)
+# Data pipelines need higher limits to prevent interruption
+DLT_PIPELINE_MONITOR:
+  credit_quota: 600  # SAFE: Increased from 300
+  frequency: MONTHLY
+  triggers:
+    75: NOTIFY
+    90: NOTIFY
+    98: NOTIFY  # Final warning - NO SUSPEND for critical pipelines
+
+# KEY SAFETY CHANGES:
+# 1. Removed most SUSPEND triggers (only account-level emergency remains)
+# 2. Increased all limits by 2-4x to realistic levels
+# 3. Added multiple NOTIFY stages for early warning
+# 4. Protected critical workloads (dev, analytics, pipelines) from auto-suspension

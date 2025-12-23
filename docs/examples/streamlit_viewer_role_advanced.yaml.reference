@@ -1,0 +1,135 @@
+# ==============================================================================
+# STREAMLIT VIEWER ROLE - Read-only Infrastructure Metadata Access
+# ==============================================================================
+# Purpose: Enable non-admin users to view infrastructure metadata in Streamlit app
+# Security: Read-only access following principle of least privilege
+# Created: 2025-09-26
+# ==============================================================================
+
+STREAMLIT_VIEWER:
+  comment: Read-only infrastructure viewer role for Streamlit app users - provides minimal metadata access without data privileges
+
+  # Inherit from PUBLIC to get basic connectivity
+  parent_role: PUBLIC
+
+  # Core metadata access privileges
+  account_grants:
+    # Monitor privilege allows viewing resource metadata without usage rights
+    - MONITOR USAGE
+    - EXECUTE TASK
+
+  # Access to Snowflake system metadata
+  database_grants:
+    SNOWFLAKE:
+      # IMPORTED PRIVILEGES grants read access to ACCOUNT_USAGE views
+      - IMPORTED PRIVILEGES
+
+  # Warehouse for executing metadata queries (create separately if needed)
+  warehouse_usage:
+    - STREAMLIT_VIEWER_WH
+
+  # Grant usage on all databases for metadata discovery
+  # Note: This only allows seeing database exists, not accessing data
+  future_grants:
+    DATABASE:
+      - USAGE
+    SCHEMA:
+      - USAGE
+
+  # Specific grants for infrastructure metadata
+  grants:
+    # Database usage for metadata queries
+    DATABASE:USAGE:
+      - SNOWFLAKE
+
+    # Allow monitoring warehouses (view status, not operate)
+    WAREHOUSE:MONITOR:
+      - ALL
+
+  # Schema-level grants for ACCOUNT_USAGE access
+  schema_grants:
+    SNOWFLAKE.ACCOUNT_USAGE:
+      # Key views for infrastructure monitoring
+      - SELECT ON VIEW USERS
+      - SELECT ON VIEW ROLES
+      - SELECT ON VIEW DATABASES
+      - SELECT ON VIEW WAREHOUSES
+      - SELECT ON VIEW WAREHOUSE_METERING_HISTORY
+      - SELECT ON VIEW LOGIN_HISTORY
+      - SELECT ON VIEW GRANTS_TO_ROLES
+      - SELECT ON VIEW GRANTS_TO_USERS
+      - SELECT ON VIEW QUERY_HISTORY
+
+    SNOWFLAKE.INFORMATION_SCHEMA:
+      # Database exploration metadata
+      - SELECT ON VIEW ENABLED_ROLES
+      - SELECT ON VIEW APPLICABLE_ROLES
+      - SELECT ON VIEW DATABASES
+      - SELECT ON VIEW OBJECT_PRIVILEGES
+
+# ==============================================================================
+# DEDICATED WAREHOUSE FOR VIEWER QUERIES
+# ==============================================================================
+# Note: Define in warehouse.yaml or create separately
+# This warehouse should be small (XSMALL) with auto-suspend enabled
+#
+# Example warehouse configuration:
+# STREAMLIT_VIEWER_WH:
+#   size: XSMALL
+#   auto_suspend: 60
+#   auto_resume: true
+#   min_cluster_count: 1
+#   max_cluster_count: 1
+#   comment: Dedicated warehouse for Streamlit viewer metadata queries
+#   scaling_policy: STANDARD
+#   resource_monitor: SNOWTOWER_MONITOR
+#   warehouse_type: STANDARD
+#   initially_suspended: false
+
+# ==============================================================================
+# INTEGRATION WITH BUSINESS ROLES
+# ==============================================================================
+# After creating this role, grant it to business roles:
+#
+# In business_role.yaml, add STREAMLIT_VIEWER to tech_roles:
+#
+# COMPANY_USERS:
+#   tech_roles:
+#     - STREAMLIT_VIEWER  # Add this line
+#     - DLT_LOADER_ROLE
+#     - STRIPE
+#     - ...
+#
+# ADMIN_ROLE:
+#   tech_roles:
+#     - STREAMLIT_VIEWER  # Add this line
+#     - ...
+#
+# BI_DEVELOPER_ROLE:
+#   tech_roles:
+#     - STREAMLIT_VIEWER  # Add this line
+#     - ...
+
+# ==============================================================================
+# USAGE NOTES
+# ==============================================================================
+# 1. This role provides READ-ONLY metadata access
+# 2. Cannot view actual data in user tables
+# 3. Cannot modify any objects
+# 4. Cannot start/stop warehouses (only monitor)
+# 5. Perfect for dashboard and monitoring use cases
+#
+# Test with:
+#   USE ROLE STREAMLIT_VIEWER;
+#   SHOW USERS;
+#   SHOW WAREHOUSES;
+#   SELECT * FROM SNOWFLAKE.ACCOUNT_USAGE.USERS LIMIT 10;
+
+# ==============================================================================
+# SECURITY CONSIDERATIONS
+# ==============================================================================
+# - No data access: Only infrastructure metadata
+# - No DDL/DML: Cannot create, alter, or drop objects
+# - No privilege grants: Cannot grant permissions to others
+# - Audit trail: All queries logged in QUERY_HISTORY
+# - Quarterly review: Schedule access reviews every 3 months

@@ -1,0 +1,25 @@
+mfa_optional_policy:
+  client_types:
+  - ALL
+  comment: Optional MFA policy for transition period before mandatory enforcement
+  mfa_authentication_methods:
+  - PASSWORD
+  - SAML
+  mfa_enrollment: OPTIONAL
+mfa_required_policy:
+  client_types:
+  - SNOWFLAKE_UI
+  - SNOWFLAKE_CLI
+  - DRIVERS
+  - SNOWSQL
+  comment: Mandatory MFA policy for human users (TYPE=PERSON) to comply with Snowflake
+    MFA rollout timeline
+  mfa_authentication_methods:
+  - PASSWORD
+  mfa_enrollment: REQUIRED
+service_account_policy:
+  client_types:
+  - DRIVERS
+  - SNOWFLAKE_CLI
+  - SNOWSQL
+  comment: Restricted client access policy for service accounts using key-pair authentication

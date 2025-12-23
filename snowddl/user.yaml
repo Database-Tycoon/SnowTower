@@ -1,0 +1,63 @@
+# SnowTower User Configuration
+#
+# This file defines all Snowflake users managed by SnowDDL.
+# See docs/guide/USER_MANAGEMENT.md for detailed documentation.
+#
+# User Types:
+#   - PERSON: Human users (require email, should use MFA)
+#   - SERVICE: Service accounts (require RSA key, no MFA)
+
+# =============================================================================
+# HUMAN USERS
+# =============================================================================
+
+ALICE_ADMIN:
+  type: PERSON
+  email: alice.admin@example.com
+  first_name: Alice
+  last_name: Admin
+  default_role: SYSADMIN
+  comment: Platform administrator
+
+JOHN_ANALYST:
+  type: PERSON
+  email: john.analyst@example.com
+  first_name: John
+  last_name: Analyst
+  default_role: ANALYST__B_ROLE
+  comment: Data analyst
+
+# =============================================================================
+# SERVICE ACCOUNTS
+# =============================================================================
+
+DBT_SERVICE:
+  type: SERVICE
+  rsa_public_key: |
+    MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA0example...
+    ...replace with your actual RSA public key...
+    AQAB
+  default_role: DBT_ANALYTICS_ROLE__B_ROLE
+  comment: dbt transformation service account
+
+DLT_SERVICE:
+  type: SERVICE
+  rsa_public_key: |
+    MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA0example...
+    ...replace with your actual RSA public key...
+    AQAB
+  default_role: DLT_INGESTION_ROLE__B_ROLE
+  comment: Data ingestion service account
+
+# =============================================================================
+# NOTES
+# =============================================================================
+#
+# Password Authentication (for human users):
+#   password: "!decrypt gAAAAA..."  # Fernet-encrypted password
+#
+# RSA Key Authentication (required for service accounts):
+#   rsa_public_key: |
+#     MIIBIjAN...
+#
+# See docs/guide/RSA_KEY_SETUP.md for RSA key generation instructions.

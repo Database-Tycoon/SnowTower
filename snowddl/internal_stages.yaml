@@ -1,0 +1,26 @@
+stages:
+  SNOWTOWER_BACKUP_STAGE:
+    comment: Internal stage for SnowTower configuration snapshots and backups
+    database: SNOWTOWER_APPS
+    permissions:
+    - privileges:
+      - READ
+      - WRITE
+      role: SNOWTOWER_USERS__T_ROLE
+    - privileges:
+      - ALL
+      role: ACCOUNTADMIN
+    schema: PUBLIC
+  SNOWTOWER_DEPLOYMENT_STAGE:
+    comment: Internal stage for SnowTower YAML deployment files - enables web UI to
+      deploy configs
+    database: SNOWTOWER_APPS
+    permissions:
+    - privileges:
+      - READ
+      - WRITE
+      role: SNOWTOWER_USERS__T_ROLE
+    - privileges:
+      - ALL
+      role: ACCOUNTADMIN
+    schema: PUBLIC

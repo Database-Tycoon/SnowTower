@@ -1,0 +1,103 @@
+# YAMLLint configuration for SnowDDL YAML files
+# Ensures consistent and secure YAML formatting
+
+extends: default
+
+rules:
+  # Line length - allow longer lines for SQL statements
+  line-length:
+    max: 150
+    level: warning
+    allow-non-breakable-words: true
+    allow-non-breakable-inline-mappings: true
+
+  # Indentation - enforce consistent 2-space indentation
+  indentation:
+    spaces: 2
+    indent-sequences: true
+    check-multi-line-strings: false
+
+  # Comments
+  comments:
+    min-spaces-from-content: 2
+    require-starting-space: true
+
+  # Document structure
+  document-start: disable  # Don't require ---
+  document-end: disable    # Don't require ...
+
+  # Quotes - prefer single quotes but allow double
+  quoted-strings:
+    quote-type: any
+    required: only-when-needed
+    extra-required: []
+    extra-allowed: []
+
+  # Truthy values - be explicit
+  truthy:
+    allowed-values: ['true', 'false', 'yes', 'no', 'True', 'False']
+    check-keys: false
+
+  # Empty values
+  empty-lines:
+    max: 2
+    max-start: 0
+    max-end: 1
+
+  # Brackets and braces
+  brackets:
+    min-spaces-inside: 0
+    max-spaces-inside: 1
+    min-spaces-inside-empty: 0
+    max-spaces-inside-empty: 0
+
+  braces:
+    min-spaces-inside: 0
+    max-spaces-inside: 1
+    min-spaces-inside-empty: 0
+    max-spaces-inside-empty: 0
+
+  # Colons
+  colons:
+    max-spaces-before: 0
+    max-spaces-after: 1
+
+  # Commas
+  commas:
+    max-spaces-before: 0
+    min-spaces-after: 1
+    max-spaces-after: 1
+
+  # Keys
+  key-duplicates: enable
+  key-ordering: disable  # SnowDDL has specific ordering requirements
+
+  # New lines
+  new-line-at-end-of-file: enable
+  new-lines:
+    type: unix
+
+  # Trailing spaces
+  trailing-spaces: enable
+
+  # Octal values - forbid to prevent confusion
+  octal-values:
+    forbid-implicit-octal: true
+    forbid-explicit-octal: true
+
+# File patterns to check
+yaml-files:
+  - '*.yaml'
+  - '*.yml'
+  - '.yamllint'
+
+# Ignore certain paths
+ignore: |
+  .venv/
+  venv/
+  .archive/
+  build/
+  dist/
+  *.egg-info/
+  __pycache__/
+  .git/

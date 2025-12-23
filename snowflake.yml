@@ -1,0 +1,7 @@
+definition_version: 1
+streamlit:
+  name: streamlit.public.snowtower_app
+  stage: streamlit.public.streamlit_app_stage
+  query_warehouse: COMPUTE_WH
+  main_file: streamlit_app.py
+  title: "SnowTower Enterprise Management"

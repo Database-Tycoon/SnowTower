@@ -1,0 +1,25 @@
+admin_session_policy:
+  comment: Strict session policy for admin users
+  comment_in_sql: 'true'
+  session_idle_timeout_mins: 15
+  session_ui_idle_timeout_mins: 15
+analyst_session_policy:
+  comment: Extended session policy for data analysts running long queries
+  comment_in_sql: 'true'
+  session_idle_timeout_mins: 180
+  session_ui_idle_timeout_mins: 240
+dev_session_policy:
+  comment: Development environment session policy
+  comment_in_sql: 'true'
+  session_idle_timeout_mins: 120
+  session_ui_idle_timeout_mins: 180
+service_session_policy:
+  comment: Session policy for service accounts and automation
+  comment_in_sql: 'true'
+  session_idle_timeout_mins: 240
+  session_ui_idle_timeout_mins: 60
+user_session_policy:
+  comment: Standard session policy for regular users
+  comment_in_sql: 'true'
+  session_idle_timeout_mins: 60
+  session_ui_idle_timeout_mins: 120

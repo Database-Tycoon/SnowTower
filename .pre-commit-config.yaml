@@ -1,0 +1,31 @@
+# Basic pre-commit configuration for SnowTower
+# See https://pre-commit.com for more information
+
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.5.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-yaml
+        args: ['--unsafe']  # Allow custom YAML tags used by SnowDDL
+      - id: check-added-large-files
+        args: ['--maxkb=500']
+      - id: check-merge-conflict
+      - id: mixed-line-ending
+
+  - repo: local
+    hooks:
+      - id: validate-schema-grants
+        name: Validate Schema Grants Configuration
+        entry: uv run validate-schema-grants
+        language: system
+        files: ^(snowddl/tech_role\.yaml|scripts/apply_schema_grants\.py)$
+        pass_filenames: false
+        always_run: false
+
+  - repo: https://github.com/psf/black
+    rev: 23.12.1
+    hooks:
+      - id: black
+        exclude: ^(tests/manual/|venv/|\.venv/)

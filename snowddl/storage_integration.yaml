@@ -1,0 +1,8 @@
+SNOWTOWER_S3_INTEGRATION:
+  comment: S3 integration for SnowTower YAML deployment, backup, and log storage
+  enabled: true
+  storage_allowed_locations:
+  - s3://your-company-bucket/
+  storage_aws_role_arn: arn:aws:iam::123456789012:role/YourSnowflakeBucketRole
+  storage_provider: S3
+  type: EXTERNAL_STAGE
