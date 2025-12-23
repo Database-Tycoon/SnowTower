@@ -7,18 +7,13 @@ on:
     branches: [main, v0.2]
 
 jobs:
-  lint-and-format:
-    name: Lint & Auto-fix
+  lint:
+    name: Lint & Format Check
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-        with:
-          ref: ${{ github.head_ref }}
-          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Install UV
         uses: astral-sh/setup-uv@v4
@@ -31,29 +26,17 @@ jobs:
       - name: Install dependencies
         run: uv sync --all-extras --dev
 
-      - name: Run Black (auto-format)
-        run: uv run black .
-
-      - name: Run Ruff (auto-fix)
-        run: uv run ruff check --fix .
-
-      - name: Commit changes
-        uses: stefanzweifel/git-auto-commit-action@v5
-        with:
-          commit_message: "style: Auto-fix linting issues"
-          commit_user_name: "github-actions[bot]"
-          commit_user_email: "github-actions[bot]@users.noreply.github.com"
+      - name: Run pre-commit
+        run: uv run pre-commit run --all-files
 
   test:
     name: Run Tests
     runs-on: ubuntu-latest
-    needs: lint-and-format
+    needs: lint
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-        with:
-          ref: ${{ github.head_ref || github.ref }}
 
       - name: Install UV
         uses: astral-sh/setup-uv@v4
@@ -69,7 +52,6 @@ jobs:
       - name: Run tests
         run: uv run pytest -v --tb=short
         env:
-          # Mock credentials for testing (tests use mocking)
           SNOWFLAKE_ACCOUNT: "test_account"
           SNOWFLAKE_USER: "test_user"
           SNOWFLAKE_PASSWORD: "test_password"
