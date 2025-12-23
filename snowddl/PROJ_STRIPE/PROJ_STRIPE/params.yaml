@@ -1,3 +1,0 @@
-comment: "dbt-managed Stripe transformation schema - Contains models from dbt_stripe project"
-retention_time: 7  # 7 days retention for transformed data
-is_transient: false
