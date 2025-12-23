@@ -2,8 +2,8 @@
 
 <div align="center">
 
-[![Production Deployment](https://github.com/Database-Tycoon/snowtower/actions/workflows/merge-deploy.yml/badge.svg)](https://github.com/Database-Tycoon/snowtower/actions/workflows/merge-deploy.yml)
-[![PR Validation](https://github.com/Database-Tycoon/snowtower/actions/workflows/pr-validation.yml/badge.svg)](https://github.com/Database-Tycoon/snowtower/actions/workflows/pr-validation.yml)
+[![CI](https://github.com/Database-Tycoon/SnowTower/actions/workflows/ci.yml/badge.svg)](https://github.com/Database-Tycoon/SnowTower/actions/workflows/ci.yml)
+[![Release](https://github.com/Database-Tycoon/SnowTower/actions/workflows/release.yml/badge.svg)](https://github.com/Database-Tycoon/SnowTower/actions/workflows/release.yml)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
 [![UV](https://img.shields.io/badge/uv-package%20manager-purple.svg)](https://docs.astral.sh/uv/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
