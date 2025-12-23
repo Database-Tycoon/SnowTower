@@ -24,6 +24,9 @@ BANNER = r"""
                     ╔═══════════════════════════════════╗
                     ║         S N O W T O W E R         ║
                     ║   Enterprise Snowflake Management ║
+                    ║                                   ║
+                    ║      (c) 2024-2025 Database Tycoon║
+                    ║         Licensed under MIT        ║
                     ╚═══════════════════════════════════╝
 """
 
