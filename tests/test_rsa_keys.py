@@ -16,13 +16,14 @@ from cryptography.hazmat.backends import default_backend
 
 # Add src to path
 import sys
+
 sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 
 from user_management.rsa_keys import (
     RSAKeyManager,
     RSAKeyError,
     RSAKeyGenerationError,
-    RSAKeyValidationError
+    RSAKeyValidationError,
 )
 
 
@@ -81,8 +82,7 @@ class TestKeyGeneration:
     def test_generate_key_pair_custom_size(self):
         """Test key pair generation with custom size"""
         private_key_path, public_key_path = self.manager.generate_key_pair(
-            "test_user",
-            key_size=4096
+            "test_user", key_size=4096
         )
 
         assert private_key_path.exists()
@@ -113,7 +113,7 @@ class TestKeyGeneration:
         # Check file permissions (should be 0600 or similar)
         mode = private_key_path.stat().st_mode
         # On Unix, check that group and others have no permissions
-        if hasattr(mode, '__and__'):
+        if hasattr(mode, "__and__"):
             # Basic check that permissions are restrictive
             assert private_key_path.exists()
 
@@ -148,7 +148,7 @@ class TestLoadPrivateKey:
         private_key_path, _ = self.manager.generate_key_pair("test_user")
 
         # Read the key file content directly (no load_private_key method exists)
-        with open(private_key_path, 'r') as f:
+        with open(private_key_path, "r") as f:
             key_content = f.read()
 
         assert key_content is not None
@@ -159,7 +159,7 @@ class TestLoadPrivateKey:
         non_existent = self.key_dir / "nonexistent_key"
 
         with pytest.raises(FileNotFoundError):
-            with open(non_existent, 'r') as f:
+            with open(non_existent, "r") as f:
                 f.read()
 
     def test_load_private_key_with_passphrase(self):
@@ -168,7 +168,7 @@ class TestLoadPrivateKey:
         private_key_path, _ = self.manager.generate_key_pair("test_user")
 
         # Keys are generated without passphrase by default
-        with open(private_key_path, 'r') as f:
+        with open(private_key_path, "r") as f:
             content = f.read()
 
         # Unencrypted keys don't have ENCRYPTED in header
@@ -210,7 +210,7 @@ class TestExtractPublicKey:
         assert "END PUBLIC KEY" not in public_key_str
 
         # Should be base64-like (no newlines in middle)
-        lines = public_key_str.strip().split('\n')
+        lines = public_key_str.strip().split("\n")
         # Single line or empty
         assert len([l for l in lines if l.strip()]) <= 1
 
@@ -251,6 +251,7 @@ class TestKeyRotation:
     def test_rotate_keys_backs_up_old_keys(self):
         """Test that key rotation keeps previous keys"""
         import time
+
         # Generate initial keys
         old_priv, old_pub = self.manager.generate_key_pair("test_user")
 
@@ -342,7 +343,7 @@ class TestKeyListing:
 
         assert len(keys) >= 3
         # Check that user keys are in the list (list_keys returns dicts with 'username' key)
-        usernames = [k['username'] for k in keys]
+        usernames = [k["username"] for k in keys]
         assert "USER1" in usernames  # Usernames are uppercased in the result
 
 
@@ -378,10 +379,12 @@ class TestKeyExport:
         private_key_path, _ = self.manager.generate_key_pair("test_user")
 
         # Read the private key file (already in PEM format)
-        with open(private_key_path, 'r') as f:
+        with open(private_key_path, "r") as f:
             pem_content = f.read()
 
-        assert "BEGIN PRIVATE KEY" in pem_content or "BEGIN RSA PRIVATE KEY" in pem_content
+        assert (
+            "BEGIN PRIVATE KEY" in pem_content or "BEGIN RSA PRIVATE KEY" in pem_content
+        )
 
 
 class TestErrorHandling:
