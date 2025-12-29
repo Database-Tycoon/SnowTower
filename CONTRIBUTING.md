@@ -15,9 +15,11 @@ The following branches are protected and require PRs:
 | Branch | Purpose | Protection |
 |--------|---------|------------|
 | `main` | Production releases | PR required, 1 approval, CI must pass |
-| `v0.x` | Release staging | PR required, 1 approval, CI must pass |
+| `v*` | Release staging | PR required, 1 approval (automatic via ruleset) |
 
-**You cannot push directly to `main` or release branches (`v0.x`).**
+**You cannot push directly to `main` or release branches.**
+
+> **Note**: Release branches (`v0.2`, `v0.3`, `v1.0`, etc.) are automatically protected by a GitHub ruleset that matches `v*`. New release branches get protection automatically - no manual setup required.
 
 ### Workflow
 
