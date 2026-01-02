@@ -334,7 +334,9 @@ def test_roundtrip(plain_password: str) -> bool:
             console.print("✅ [green]Round-trip test successful![/green]")
             return True
         else:
-            console.print("❌ [red]Round-trip test failed! Passwords don't match.[/red]")
+            console.print(
+                "❌ [red]Round-trip test failed! Passwords don't match.[/red]"
+            )
             return False
 
     except Exception as e:

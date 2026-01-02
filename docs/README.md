@@ -10,7 +10,7 @@
 | Fix schema permissions | [Schema Grants](guide/SCHEMA_GRANTS.md) |
 | Troubleshoot issues | [Troubleshooting](guide/TROUBLESHOOTING.md) |
 | View the changelog | [Changelog](releases/CHANGELOG.md) |
-| Use LLMs with this repo | [Agent Config](agents/) |
+| Use LLMs with this repo | [LLM Context](llm-context/) |
 
 ---
 
@@ -41,14 +41,14 @@ All user-facing documentation.
 
 ---
 
-## Agents (LLM Configuration)
+## LLM Context
 
 Configuration files for using LLMs with this codebase.
 
-- [README](agents/README.md) - Overview and quick start
-- [CLAUDE.md](agents/CLAUDE.md) - Full project instructions for Claude
-- [CONTEXT.md](agents/CONTEXT.md) - Domain knowledge and project context
-- [PATTERNS.md](agents/PATTERNS.md) - Code patterns and conventions
+- [README](llm-context/README.md) - Overview and quick start
+- [CLAUDE.md](llm-context/CLAUDE.md) - Full project instructions for Claude
+- [CONTEXT.md](llm-context/CONTEXT.md) - Domain knowledge and project context
+- [PATTERNS.md](llm-context/PATTERNS.md) - Code patterns and conventions
 
 ---
 
@@ -66,6 +66,8 @@ For developers and contributors.
 ## Releases
 
 - [Changelog](releases/CHANGELOG.md) - Version history
+- [v0.2 Release](releases/v0.2/) - CI/CD & Developer Experience
+- [v0.3 Roadmap](releases/v0.3/) - Upcoming features
 - [v0.1 Release](releases/v0.1/) - Initial release docs
 
 ---
@@ -99,4 +101,4 @@ Historical documentation: [Archive](archive/)
 
 ---
 
-**Last Updated**: November 2025
+**Last Updated**: January 2026

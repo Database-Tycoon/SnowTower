@@ -442,7 +442,7 @@ class TestValidateUser:
                 return_value={
                     "type": "PERSON",
                     "first_name": "Test",
-                    "last_name": "User"
+                    "last_name": "User",
                     # Missing email
                 }
             )

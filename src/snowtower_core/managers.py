@@ -568,9 +568,11 @@ class WarehouseManager(BaseManager):
 
             warehouse_analysis = {
                 "name": warehouse.name,
-                "size": warehouse.size.value
-                if hasattr(warehouse.size, "value")
-                else str(warehouse.size),
+                "size": (
+                    warehouse.size.value
+                    if hasattr(warehouse.size, "value")
+                    else str(warehouse.size)
+                ),
                 "state": warehouse.state,
                 "auto_suspend_minutes": auto_suspend_minutes,
                 "auto_resume": warehouse.auto_resume,

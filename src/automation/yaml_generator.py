@@ -45,9 +45,9 @@ class GeneratedUserConfig:
         return {
             "username": self.username,
             "yaml_config": self.yaml_config,
-            "private_key_path": str(self.private_key_path)
-            if self.private_key_path
-            else None,
+            "private_key_path": (
+                str(self.private_key_path) if self.private_key_path else None
+            ),
             "temp_password": self.temp_password,
             "metadata": self.metadata or {},
         }
@@ -130,9 +130,9 @@ class SnowDDLYAMLGenerator:
 
             # Build base user configuration
             user_config = {
-                "type": "SERVICE"
-                if parsed_data.user_type.value == "service"
-                else "PERSON",
+                "type": (
+                    "SERVICE" if parsed_data.user_type.value == "service" else "PERSON"
+                ),
                 "first_name": first_name,
                 "last_name": last_name,
                 "login_name": username,

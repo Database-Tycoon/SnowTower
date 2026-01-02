@@ -362,7 +362,9 @@ class YAMLHandler:
             # Copy backup to main file
             shutil.copy2(backup_path, self.user_yaml)
 
-            console.print(f"✅ [green]Restored configuration from {backup_name}[/green]")
+            console.print(
+                f"✅ [green]Restored configuration from {backup_name}[/green]"
+            )
             return True
 
         except Exception as e:

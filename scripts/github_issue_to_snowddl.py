@@ -230,9 +230,9 @@ def save_artifacts(config: GeneratedUserConfig, output_dir: Path):
         "username": username,
         "email": config.yaml_config[username].get("email"),
         "temporary_password": config.temp_password,
-        "private_key_path": str(config.private_key_path)
-        if config.private_key_path
-        else None,
+        "private_key_path": (
+            str(config.private_key_path) if config.private_key_path else None
+        ),
         "metadata": config.metadata,
     }
 

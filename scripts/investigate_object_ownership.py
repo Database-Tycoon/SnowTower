@@ -115,7 +115,9 @@ def main():
         objects = cursor.fetchall()
         print(f"\nFound {len(objects)} objects:\n")
         for obj in objects:
-            owner_flag = "❌ ACCOUNTADMIN" if obj[2] == "ACCOUNTADMIN" else f"✅ {obj[2]}"
+            owner_flag = (
+                "❌ ACCOUNTADMIN" if obj[2] == "ACCOUNTADMIN" else f"✅ {obj[2]}"
+            )
             print(f"  {obj[1]:12} | {obj[0]:40} | {owner_flag} | Created: {obj[3]}")
 
         # Step 2: Check who created these objects (last 7 days)

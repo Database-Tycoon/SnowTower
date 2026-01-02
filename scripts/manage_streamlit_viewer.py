@@ -404,7 +404,9 @@ Examples:
 
             print("\n📊 Verification Summary:")
             print(f"  Role exists: {'✅' if results['role_exists'] else '❌'}")
-            print(f"  Warehouse exists: {'✅' if results['warehouse_exists'] else '❌'}")
+            print(
+                f"  Warehouse exists: {'✅' if results['warehouse_exists'] else '❌'}"
+            )
             print(
                 f"  Permissions granted: {len(results['warehouse_grants']) + len(results['database_grants']) + len(results['account_grants'])}"
             )
