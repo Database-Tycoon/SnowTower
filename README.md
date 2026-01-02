@@ -2,8 +2,8 @@
 
 <div align="center">
 
-[![Production Deployment](https://github.com/Database-Tycoon/snowtower/actions/workflows/merge-deploy.yml/badge.svg)](https://github.com/Database-Tycoon/snowtower/actions/workflows/merge-deploy.yml)
-[![PR Validation](https://github.com/Database-Tycoon/snowtower/actions/workflows/pr-validation.yml/badge.svg)](https://github.com/Database-Tycoon/snowtower/actions/workflows/pr-validation.yml)
+[![CI](https://github.com/Database-Tycoon/SnowTower/actions/workflows/ci.yml/badge.svg)](https://github.com/Database-Tycoon/SnowTower/actions/workflows/ci.yml)
+[![Release](https://github.com/Database-Tycoon/SnowTower/actions/workflows/release.yml/badge.svg)](https://github.com/Database-Tycoon/SnowTower/actions/workflows/release.yml)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
 [![UV](https://img.shields.io/badge/uv-package%20manager-purple.svg)](https://docs.astral.sh/uv/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
@@ -309,144 +309,141 @@ uv run snowddl-plan
 uv run deploy-safe
 ```
 
-### 🚀 CI/CD Infrastructure & Automated Deployment
+### 🚀 CI/CD & GitHub Workflows
 
-Automated deployment pipeline for SnowDDL configuration management using GitHub Actions.
+Automated testing, validation, and release management using GitHub Actions.
 
 #### 📋 Overview
 
 This CI/CD system provides:
-- **Automated validation** on pull requests
-- **Safe deployment** to production on main branch merges
-- **Security scanning** and safety gates
-- **Emergency rollback** capabilities
-- **Health monitoring** and notifications
+- **Automated testing** on every pull request (333 tests)
+- **Code quality checks** via pre-commit hooks
+- **Auto-labeling** of PRs based on changed files
+- **Automated releases** with changelog generation
 
 #### 🏗️ CI/CD Architecture
 
 ```mermaid
 graph TD
-    A[Developer Creates PR] --> B[PR Validation Workflow]
-    B --> C{Validation Passes?}
-    C -->|No| D[Block PR]
-    C -->|Yes| E[Add Plan Comment to PR]
-    E --> F[PR Review & Approval]
-    F --> G[Merge to Main]
-    G --> H[Production Deployment Workflow]
-    H --> I[Create Snapshot]
-    I --> J[Safety Gate Check]
-    J --> K{Safe to Deploy?}
-    K -->|No| L[Block Deployment]
-    K -->|Yes| M[Apply SnowDDL Changes]
-    M --> N[Health Check]
-    N --> O{Health Check Passes?}
-    O -->|No| P[Auto Rollback]
-    O -->|Yes| Q[Success Notification]
-    P --> R[Emergency Notification]
+    A[Developer Creates PR] --> B[CI Workflow]
+    B --> C[Lint & Format Check]
+    C --> D[Run Tests - 333 tests]
+    D --> E{All Checks Pass?}
+    E -->|No| F[Block Merge]
+    E -->|Yes| G[Auto-Label PR]
+    G --> H[PR Review & Approval]
+    H --> I[Merge to Main/v0.x]
+    I --> J[Ready for Release]
+    J --> K[Push Tag v0.x.x]
+    K --> L[Release Workflow]
+    L --> M[Validate & Test]
+    M --> N[Generate Changelog]
+    N --> O[Create GitHub Release]
 ```
 
 #### 🔧 Workflows
 
-**1. PR Validation (`.github/workflows/pr-validation.yml`)**
-- **Trigger:** Pull requests to main branch
-- **Purpose:** Validate changes before merge
-- **Steps:** Configuration validation, security scanning, SnowDDL plan generation, plan analysis, PR comment with preview
+**1. CI Pipeline (`.github/workflows/ci.yml`)**
+- **Trigger:** Pull requests and pushes to `main` or `v0.x` branches
+- **Purpose:** Validate code quality and run tests
+- **Jobs:**
+  - **Lint & Format Check**: Runs `uv run pre-commit run --all-files`
+    - Black code formatting
+    - YAML validation
+    - Trailing whitespace removal
+    - Secrets detection
+  - **Run Tests**: Runs `uv run pytest -v --tb=short` (333 tests)
+    - Uses mock Snowflake credentials (no real connection needed)
+    - Tests user management, YAML handling, and core functionality
 
-**2. Production Deployment (`.github/workflows/deploy-production.yml`)**
-- **Trigger:** Pushes to main branch, manual dispatch
-- **Purpose:** Apply changes to Snowflake production
-- **Steps:** Pre-deployment snapshot, safety analysis, SnowDDL application, health checks, notifications, rollback capability
+**2. Release Workflow (`.github/workflows/release.yml`)**
+- **Trigger:** Pushing a version tag (e.g., `v0.2.0`)
+- **Purpose:** Create GitHub releases with auto-generated notes
+- **Jobs:**
+  - **Validate**: Run all CI checks on the tagged commit
+  - **Create Release**: Generate changelog from commits and publish release
 
-#### ⚙️ GitHub Secrets Configuration
+**3. Auto-Labeler (`.github/workflows/labeler.yml`)**
+- **Trigger:** Pull request events
+- **Purpose:** Automatically label PRs based on changed files
+- **Labels:**
+  - `infrastructure` - Changes to `snowddl/*.yaml`
+  - `documentation` - Changes to `docs/**` or `*.md`
+  - `ci` - Changes to `.github/**`
+  - `python` - Changes to `*.py`
 
-Required repository secrets ([Settings → Secrets and variables → Actions](https://github.com/Database-Tycoon/snowtower/settings/secrets/actions)):
+**4. Changelog (`.github/workflows/changelog.yml`)**
+- **Trigger:** Pushes to main branch
+- **Purpose:** Keep CHANGELOG.md updated automatically
 
-| Secret Name | Description | Example Value |
-|------------|-------------|---------------|
-| `SNOWFLAKE_ACCOUNT` | Your Snowflake account identifier | `ABC12345` |
-| `SNOWFLAKE_USER` | Service account username for CI/CD | `SNOWDDL` (must have ACCOUNTADMIN role) |
-| `SNOWFLAKE_WAREHOUSE` | Warehouse to use for operations | `ADMIN` |
-| `SNOWFLAKE_ROLE` | Role for SnowDDL operations | `ACCOUNTADMIN` (required for full access) |
-| `SNOWFLAKE_CONFIG_FERNET_KEYS` | Fernet key for password encryption | Generate with: `uv run generate-fernet-key` |
-| `SNOWFLAKE_PRIVATE_KEY` | RSA private key in PEM format | Base64-encoded private key |
+#### 🔄 Development Workflow
 
-#### Setting up the Private Key
+```bash
+# 1. Create feature branch from release branch
+git checkout v0.2
+git pull origin v0.2
+git checkout -b feature/my-feature
 
-1. **Convert private key to base64:**
-   ```bash
-   base64 -w 0 ~/.snowflake/keys/snowflake_key_pkcs8.pem
-   ```
+# 2. Make changes and run pre-commit
+uv run pre-commit run --all-files
 
-2. **Add to GitHub secrets:**
-   - Go to repository Settings → Secrets and variables → Actions
-   - Click "New repository secret"
-   - Name: `SNOWFLAKE_PRIVATE_KEY`
-   - Value: Paste the base64 output
+# 3. Commit with conventional commit format
+git commit -m "feat: Add new feature"
 
-3. **Verify the setup:**
-   ```bash
-   gh workflow run "PR Validation - SnowDDL Plan & Security Scan"
-   gh run list --limit 1
-   ```
+# 4. Push and create PR
+git push -u origin feature/my-feature
+gh pr create --base v0.2
 
-#### 🛡️ Safety Mechanisms
+# 5. After PR approval and merge, create release
+git checkout main
+git pull
+git tag v0.2.0
+git push origin v0.2.0  # Triggers release workflow
+```
 
-**Security Scanning:**
-- **Python Code:** Bandit security linting
-- **Dependencies:** Safety vulnerability checking
-- **YAML Files:** Custom security scanner for secrets/misconfigurations
+#### 📝 Commit Message Format
 
-**Safety Gates:**
-- **Dangerous Operations:** Auto-block USER deletions, critical DB drops
-- **High-Risk Changes:** Flag admin role changes, password modifications
-- **Approval Requirements:** Manual approval for destructive operations
+Use [Conventional Commits](https://www.conventionalcommits.org/) for automatic changelog generation:
 
-**Emergency Procedures:**
-- **Rollback:** Automatic rollback on health check failures
-- **Manual Rollback:** `workflow_dispatch` with snapshot ID
-- **Recovery:** Basic recovery without snapshots
+| Prefix | Purpose | Changelog Section |
+|--------|---------|-------------------|
+| `feat:` | New features | Features |
+| `fix:` | Bug fixes | Bug Fixes |
+| `docs:` | Documentation | Other |
+| `chore:` | Maintenance | Other |
+| `refactor:` | Code refactoring | Other |
 
-#### 🔄 Deployment Process
+#### ⚙️ GitHub Secrets (Optional)
 
-**Normal Deployment:**
-1. Create feature branch
-2. Make SnowDDL configuration changes
-3. Open pull request → triggers validation
-4. Review PR plan comment
-5. Merge PR → triggers production deployment
-6. Monitor deployment status and health checks
+For future enhancements like automated `snowddl-plan` on PRs, configure these secrets:
 
-**Emergency Rollback:**
-1. Go to Actions → Production Deployment
-2. Click "Run workflow"
-3. Enter rollback snapshot ID
-4. Confirm execution
-5. Monitor rollback progress
+| Secret Name | Description |
+|------------|-------------|
+| `SNOWFLAKE_ACCOUNT` | Snowflake account identifier |
+| `SNOWFLAKE_USER` | Service account username |
+| `SNOWFLAKE_PRIVATE_KEY` | Base64-encoded RSA private key |
+| `SNOWFLAKE_CONFIG_FERNET_KEYS` | Fernet encryption key |
 
-#### 📊 Monitoring & Health Checks
+> **Note:** Current CI runs tests with mock credentials - no real Snowflake connection required.
 
-**Slack Notifications:**
-- ✅ **Successful deployments** with summary
-- ❌ **Failed deployments** with error details
-- 🚨 **Emergency rollbacks** with recovery instructions
+#### 🚨 Troubleshooting CI Failures
 
-**Health Checks:**
-- Connection testing, user authentication verification, role assignment validation
-- Database access testing, warehouse functionality, critical user status
+**Lint Check Failed:**
+```bash
+# Run pre-commit locally to see and fix issues
+uv run pre-commit run --all-files
+```
 
-#### 🚨 Troubleshooting
+**Tests Failed:**
+```bash
+# Run tests locally with verbose output
+uv run pytest -v --tb=long
+```
 
-**Deployment Blocked by Safety Gate**
-- Review safety gate output, verify changes are intentional
-- Use `force_apply: true` for emergency deployments
-
-**Health Check Failures**
-- Check Snowflake service status, verify network connectivity
-- Review authentication credentials, check for user lockouts
-
-**Emergency Contacts**
-- **Snowflake Admin:** Contact your administrator
-- **Service Account:** SNOWDDL (RSA key authentication)
+**PR Can't Be Merged:**
+- Ensure all CI checks pass (green checkmarks)
+- Get at least 1 approval from a reviewer
+- Resolve any merge conflicts
 
 ### Resource Monitor Safety
 
@@ -597,13 +594,20 @@ uv run snowddl-validate snowddl/warehouse.yaml
 
 ### Development & Contributing
 
-#### Development Setup
+See **[CONTRIBUTING.md](CONTRIBUTING.md)** for complete guidelines on:
+- Branch strategy and protected branches
+- Pull request requirements
+- Commit message conventions
+- Release process
+
+#### Quick Development Setup
 ```bash
 # Fork and clone
 git clone https://github.com/YOUR-USERNAME/snowtower-snowddl.git
 cd snowtower-snowddl
 
-# Create feature branch
+# Create feature branch from release branch
+git checkout v0.2
 git checkout -b feature/my-awesome-feature
 
 # Install dev dependencies
@@ -613,8 +617,8 @@ uv sync --dev
 uv run pytest
 
 # Run pre-commit hooks
-pre-commit install
-pre-commit run --all-files
+uv run pre-commit install
+uv run pre-commit run --all-files
 ```
 
 #### AI Agent System
