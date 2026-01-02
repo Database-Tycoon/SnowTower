@@ -44,7 +44,7 @@ snowtower-snowddl/
 ├── docs/              # Documentation
 │   ├── guide/         # User guides
 │   ├── contributing/  # Developer docs
-│   ├── agents/        # LLM configuration
+│   ├── llm-context/   # LLM configuration
 │   └── ...
 └── pyproject.toml     # UV/Python config
 ```
@@ -234,7 +234,7 @@ SQL access control error: View 'MY_VIEW' already exists, but current role has no
 
 ## For More Details
 
-- [Full Agent Instructions](docs/agents/CLAUDE.md)
-- [Project Context](docs/agents/CONTEXT.md)
-- [Code Patterns](docs/agents/PATTERNS.md)
+- [Full LLM Instructions](docs/llm-context/CLAUDE.md)
+- [Project Context](docs/llm-context/CONTEXT.md)
+- [Code Patterns](docs/llm-context/PATTERNS.md)
 - [CLI Reference](docs/guide/MANAGEMENT_COMMANDS.md)

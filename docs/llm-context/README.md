@@ -1,12 +1,12 @@
-# LLM Agent Configuration
+# LLM Context Configuration
 
-This directory contains configuration files for using LLMs (Claude, GPT, etc.) effectively with the SnowTower codebase.
+This directory contains context files for LLMs (Claude, GPT, etc.) working with the SnowTower codebase.
 
 ## Files
 
 | File | Purpose |
 |------|---------|
-| [CLAUDE.md](CLAUDE.md) | Primary instructions for Claude Code and Claude-based agents |
+| [CLAUDE.md](CLAUDE.md) | Detailed instructions for Claude Code |
 | [CONTEXT.md](CONTEXT.md) | Project context and domain knowledge |
 | [PATTERNS.md](PATTERNS.md) | Code patterns and conventions to follow |
 

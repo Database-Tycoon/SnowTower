@@ -621,18 +621,15 @@ uv run pre-commit install
 uv run pre-commit run --all-files
 ```
 
-#### AI Agent System
+#### Claude Code Skills
 
-This project includes AI agents for assistance:
+This project includes Claude Code skills for AI-assisted workflows:
 
-| Agent | Purpose | Key Capabilities |
-|-------|---------|------------------|
-| [META_AGENT](agents/META_AGENT.md) | Central orchestrator | Routes requests, coordinates other agents |
-| [DEPLOYMENT_AGENT](agents/DEPLOYMENT_AGENT.md) | Deployment guidance | CI/CD setup, production deployments |
-| [SECURITY_AGENT](agents/SECURITY_AGENT.md) | Security expert | Authentication, encryption, compliance |
-| [DATA_ENGINEER_AGENT](agents/DATA_ENGINEER_AGENT.md) | Data engineering | Schema design, performance optimization |
-| [COST_AGENT](agents/COST_AGENT.md) | Cost optimization | Resource monitoring, budget management |
-| [ONBOARDING_AGENT](agents/ONBOARDING_AGENT.md) | User onboarding | New user setup, access provisioning |
+| Skill | Purpose | Use When |
+|-------|---------|----------|
+| [snowtower-user](.claude/skills/snowtower-user/) | End-user guide | Requesting access, connecting to Snowflake |
+| [snowtower-admin](.claude/skills/snowtower-admin/) | Admin operations | SnowDDL deployments, user management, troubleshooting |
+| [snowtower-maintainer](.claude/skills/snowtower-maintainer/) | Project maintenance | README updates, documentation sync |
 
 ### Full Documentation
 
@@ -641,7 +638,6 @@ This project includes AI agents for assistance:
 - 🔐 **[Security Guide](docs/guide/SECURITY_NOTICE.md)** - Authentication and security best practices
 - 📖 **[CLI Reference](docs/guide/MANAGEMENT_COMMANDS.md)** - Complete CLI documentation
 - 🔧 **[Schema Grants](docs/guide/SCHEMA_GRANTS.md)** - Managing schema-level permissions
-- 🤖 **[LLM Agent Configuration](docs/agents/)** - Using AI agents with this repo
 
 ### Status & Metrics
 
