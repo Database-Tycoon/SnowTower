@@ -115,7 +115,9 @@ def validate_config():
         for required_path in required_paths:
             file_path = config_root / required_path
             if file_path.exists():
-                console.print(f"✅ [green]{required_path}[/green] - Required file found")
+                console.print(
+                    f"✅ [green]{required_path}[/green] - Required file found"
+                )
             else:
                 error_msg = f"❌ {required_path}: Required file missing"
                 errors.append(error_msg)
@@ -506,7 +508,9 @@ def apply():
 
         if result.returncode == 0:
             console.print("✅ [green]Apply completed successfully![/green]")
-            console.print("🔄 [blue]Infrastructure has been updated in Snowflake[/blue]")
+            console.print(
+                "🔄 [blue]Infrastructure has been updated in Snowflake[/blue]"
+            )
         else:
             console.print(
                 f"❌ [red]Apply failed with return code {result.returncode}[/red]"
@@ -618,9 +622,7 @@ def apply_user_updates():
         console.print(f"Using config directory: {config_root}")
 
         # Safety confirmation
-        console.print(
-            "⚠️ [yellow]This will modify user profiles in Snowflake![/yellow]"
-        )
+        console.print("⚠️ [yellow]This will modify user profiles in Snowflake![/yellow]")
         console.print(
             "⚠️ [yellow]Including RSA keys, names, and other personal information![/yellow]"
         )
@@ -711,7 +713,9 @@ def apply_user_updates():
             console.print(
                 "\\n✅ [green]User profile updates applied successfully![/green]"
             )
-            console.print("🔄 [blue]User profiles have been updated in Snowflake[/blue]")
+            console.print(
+                "🔄 [blue]User profiles have been updated in Snowflake[/blue]"
+            )
             console.print("\\n🔍 [yellow]Next Steps:[/yellow]")
             console.print("  • Users should test their RSA key authentication")
             console.print("  • Verify updated profile information in Snowflake UI")
@@ -729,7 +733,9 @@ def apply_user_updates():
         console.print("Installation: pip install snowddl")
         sys.exit(1)
     except Exception as e:
-        console.print("❌ [red]Error applying user updates:[/red]", str(e), markup=False)
+        console.print(
+            "❌ [red]Error applying user updates:[/red]", str(e), markup=False
+        )
         sys.exit(1)
 
 
@@ -991,7 +997,9 @@ def lint_config():
         table.add_column("Count", style="magenta")
         table.add_column("Status", style="green")
 
-        table.add_row("Issues", str(len(issues)), "❌ Critical" if issues else "✅ None")
+        table.add_row(
+            "Issues", str(len(issues)), "❌ Critical" if issues else "✅ None"
+        )
         table.add_row(
             "Suggestions",
             str(len(suggestions)),

@@ -347,7 +347,8 @@ class PasswordGenerator:
         table.add_row("Length", str(password_info["length"]))
         table.add_row("Generated At", password_info["generated_at"])
         table.add_row(
-            "Encryption Valid", "✅ Yes" if password_info["encryption_valid"] else "❌ No"
+            "Encryption Valid",
+            "✅ Yes" if password_info["encryption_valid"] else "❌ No",
         )
 
         console.print(table)

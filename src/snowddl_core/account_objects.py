@@ -583,9 +583,9 @@ class Warehouse(AccountLevelObject):
         if self.enable_query_acceleration:
             data["enable_query_acceleration"] = self.enable_query_acceleration
         if self.query_acceleration_max_scale_factor != 8:
-            data[
-                "query_acceleration_max_scale_factor"
-            ] = self.query_acceleration_max_scale_factor
+            data["query_acceleration_max_scale_factor"] = (
+                self.query_acceleration_max_scale_factor
+            )
         if self.resource_constraint:
             data["resource_constraint"] = self.resource_constraint
         if self.warehouse_params:

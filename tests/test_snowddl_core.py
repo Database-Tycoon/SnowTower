@@ -88,7 +88,7 @@ class TestUserObject:
             login_name="invalid",
             type="PERSON",
             first_name="Invalid",
-            last_name="User"
+            last_name="User",
             # Missing email
         )
 
@@ -102,7 +102,7 @@ class TestUserObject:
             name="SERVICE_ACCOUNT",
             login_name="service",
             type="SERVICE",
-            email="service@company.com"
+            email="service@company.com",
             # Missing RSA key
         )
 
@@ -442,7 +442,7 @@ class TestSnowDDLProject:
         invalid_user = User(
             name="INVALID",
             login_name="invalid",
-            type="PERSON"
+            type="PERSON",
             # Missing email
         )
         project.add_user(invalid_user)
