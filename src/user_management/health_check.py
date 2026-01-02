@@ -415,9 +415,7 @@ class UserHealthChecker:
             score_color = (
                 "green"
                 if result.health_score >= 85
-                else "yellow"
-                if result.health_score >= 50
-                else "red"
+                else "yellow" if result.health_score >= 50 else "red"
             )
 
             table.add_row(

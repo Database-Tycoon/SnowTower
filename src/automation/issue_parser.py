@@ -130,15 +130,21 @@ class ParsedIssueData:
             "full_name": self.full_name,
             "email": self.email,
             "username": self.username,
-            "user_type": self.user_type.value
-            if isinstance(self.user_type, Enum)
-            else self.user_type,
-            "role_type": self.role_type.value
-            if isinstance(self.role_type, Enum)
-            else self.role_type,
-            "warehouse_size": self.warehouse_size.value
-            if isinstance(self.warehouse_size, Enum)
-            else self.warehouse_size,
+            "user_type": (
+                self.user_type.value
+                if isinstance(self.user_type, Enum)
+                else self.user_type
+            ),
+            "role_type": (
+                self.role_type.value
+                if isinstance(self.role_type, Enum)
+                else self.role_type
+            ),
+            "warehouse_size": (
+                self.warehouse_size.value
+                if isinstance(self.warehouse_size, Enum)
+                else self.warehouse_size
+            ),
             "business_justification": self.business_justification,
             "manager_email": self.manager_email,
             "project_team": self.project_team,

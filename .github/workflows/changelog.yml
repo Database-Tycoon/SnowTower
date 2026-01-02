@@ -1,0 +1,109 @@
+name: Generate Changelog
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version for changelog (e.g., v0.2.0)'
+        required: true
+        type: string
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  changelog:
+    name: Generate Changelog
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Get version
+        id: version
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "version=${{ inputs.version }}" >> $GITHUB_OUTPUT
+          else
+            echo "version=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Get previous tag
+        id: prev_tag
+        run: |
+          PREV_TAG=$(git describe --tags --abbrev=0 HEAD^ 2>/dev/null || echo "")
+          echo "tag=$PREV_TAG" >> $GITHUB_OUTPUT
+
+      - name: Generate changelog
+        id: changelog
+        run: |
+          VERSION="${{ steps.version.outputs.version }}"
+          PREV_TAG="${{ steps.prev_tag.outputs.tag }}"
+
+          echo "# Changelog for $VERSION" > CHANGELOG_NEW.md
+          echo "" >> CHANGELOG_NEW.md
+          echo "Generated on $(date -u +%Y-%m-%d)" >> CHANGELOG_NEW.md
+          echo "" >> CHANGELOG_NEW.md
+
+          # Determine commit range
+          if [ -n "$PREV_TAG" ]; then
+            RANGE="$PREV_TAG..HEAD"
+            echo "Changes since $PREV_TAG:" >> CHANGELOG_NEW.md
+          else
+            RANGE="HEAD"
+            echo "Initial release:" >> CHANGELOG_NEW.md
+          fi
+          echo "" >> CHANGELOG_NEW.md
+
+          # Features
+          FEATURES=$(git log $RANGE --pretty=format:"- %s (%h)" --grep="^feat" 2>/dev/null || true)
+          if [ -n "$FEATURES" ]; then
+            echo "## Features" >> CHANGELOG_NEW.md
+            echo "$FEATURES" >> CHANGELOG_NEW.md
+            echo "" >> CHANGELOG_NEW.md
+          fi
+
+          # Fixes
+          FIXES=$(git log $RANGE --pretty=format:"- %s (%h)" --grep="^fix" 2>/dev/null || true)
+          if [ -n "$FIXES" ]; then
+            echo "## Bug Fixes" >> CHANGELOG_NEW.md
+            echo "$FIXES" >> CHANGELOG_NEW.md
+            echo "" >> CHANGELOG_NEW.md
+          fi
+
+          # Documentation
+          DOCS=$(git log $RANGE --pretty=format:"- %s (%h)" --grep="^docs" 2>/dev/null || true)
+          if [ -n "$DOCS" ]; then
+            echo "## Documentation" >> CHANGELOG_NEW.md
+            echo "$DOCS" >> CHANGELOG_NEW.md
+            echo "" >> CHANGELOG_NEW.md
+          fi
+
+          # Style/Chore
+          OTHER=$(git log $RANGE --pretty=format:"- %s (%h)" --grep="^style\|^chore\|^refactor" 2>/dev/null || true)
+          if [ -n "$OTHER" ]; then
+            echo "## Other Changes" >> CHANGELOG_NEW.md
+            echo "$OTHER" >> CHANGELOG_NEW.md
+            echo "" >> CHANGELOG_NEW.md
+          fi
+
+          # All commits (fallback if no conventional commits)
+          ALL=$(git log $RANGE --pretty=format:"- %s (%h)" 2>/dev/null || true)
+          if [ -z "$FEATURES" ] && [ -z "$FIXES" ] && [ -z "$DOCS" ] && [ -z "$OTHER" ]; then
+            echo "## All Changes" >> CHANGELOG_NEW.md
+            echo "$ALL" >> CHANGELOG_NEW.md
+            echo "" >> CHANGELOG_NEW.md
+          fi
+
+          cat CHANGELOG_NEW.md
+
+      - name: Upload changelog artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: changelog-${{ steps.version.outputs.version }}
+          path: CHANGELOG_NEW.md

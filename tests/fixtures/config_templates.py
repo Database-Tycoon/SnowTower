@@ -132,7 +132,7 @@ INVALID_USER_CONFIGS = [
         "name": "MISSING_TYPE",
         "config": {
             "login_name": "TEST_USER",
-            "email": "test@example.com"
+            "email": "test@example.com",
             # Missing required 'type' field
         },
         "expected_error": "Missing required field: type",

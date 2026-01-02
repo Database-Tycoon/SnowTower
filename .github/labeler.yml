@@ -1,0 +1,44 @@
+# Configuration for actions/labeler
+# Maps file patterns to labels
+
+infrastructure:
+  - changed-files:
+      - any-glob-to-any-file: 'snowddl/**/*.yaml'
+
+user-change:
+  - changed-files:
+      - any-glob-to-any-file: 'snowddl/user.yaml'
+
+security:
+  - changed-files:
+      - any-glob-to-any-file:
+          - 'snowddl/*policy*.yaml'
+          - 'snowddl/authentication*.yaml'
+          - 'snowddl/network*.yaml'
+
+code:
+  - changed-files:
+      - any-glob-to-any-file:
+          - 'src/**/*.py'
+          - 'scripts/**/*.py'
+
+tests:
+  - changed-files:
+      - any-glob-to-any-file: 'tests/**'
+
+documentation:
+  - changed-files:
+      - any-glob-to-any-file:
+          - 'docs/**'
+          - '*.md'
+          - 'README.md'
+
+ci/cd:
+  - changed-files:
+      - any-glob-to-any-file: '.github/**'
+
+dependencies:
+  - changed-files:
+      - any-glob-to-any-file:
+          - 'pyproject.toml'
+          - 'uv.lock'

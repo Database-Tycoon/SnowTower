@@ -1,0 +1,113 @@
+name: New User Request
+description: Request a new Snowflake user account
+title: "[User Request] "
+labels: ["user-change", "infrastructure"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## New Snowflake User Request
+        Please fill out this form to request a new Snowflake user account.
+
+  - type: input
+    id: username
+    attributes:
+      label: Username
+      description: Snowflake username (typically FIRSTNAME_LASTNAME in uppercase)
+      placeholder: "JOHN_SMITH"
+    validations:
+      required: true
+
+  - type: input
+    id: email
+    attributes:
+      label: Email Address
+      description: User's email address for notifications
+      placeholder: "john.smith@example.com"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: user_type
+    attributes:
+      label: User Type
+      description: Is this a human user or a service account?
+      options:
+        - PERSON (Human user)
+        - SERVICE (Service account / application)
+    validations:
+      required: true
+
+  - type: dropdown
+    id: default_role
+    attributes:
+      label: Default Role
+      description: The default role for this user
+      options:
+        - PUBLIC (Read-only access)
+        - ANALYST (Query and reporting)
+        - DEVELOPER (Development access)
+        - ADMIN (Administrative access)
+        - CUSTOM (Specify in notes)
+    validations:
+      required: true
+
+  - type: input
+    id: team
+    attributes:
+      label: Team / Department
+      description: Which team or department is this user part of?
+      placeholder: "Data Engineering"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: mfa_required
+    attributes:
+      label: MFA Requirement
+      description: Should MFA be enforced for this user?
+      options:
+        - "Yes (Recommended for human users)"
+        - "No (Service accounts only)"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: auth_method
+    attributes:
+      label: Authentication Method
+      description: How will this user authenticate?
+      options:
+        - RSA Key Pair (Recommended)
+        - Password (Emergency fallback only)
+        - Both (RSA primary, password backup)
+    validations:
+      required: true
+
+  - type: textarea
+    id: justification
+    attributes:
+      label: Business Justification
+      description: Why is this user account needed?
+      placeholder: "This user needs access to run analytics queries for the sales team..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: additional_notes
+    attributes:
+      label: Additional Notes
+      description: Any other relevant information (specific databases, warehouses, network restrictions, etc.)
+      placeholder: "Needs access to ANALYTICS_DB and REPORTING warehouse..."
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: acknowledgment
+    attributes:
+      label: Acknowledgment
+      options:
+        - label: I understand that the user will need to complete RSA key setup after account creation
+          required: true
+        - label: I have verified this request with the appropriate manager/approver
+          required: true

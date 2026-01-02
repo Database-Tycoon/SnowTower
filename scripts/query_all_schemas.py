@@ -154,12 +154,16 @@ def query_all_schemas():
                                     table[3],  # owner
                                     f"{table[4]:,}" if table[4] else "0",  # row_count
                                     f"{table[5]:,}" if table[5] else "0",  # bytes
-                                    table[6].strftime("%Y-%m-%d %H:%M")
-                                    if table[6]
-                                    else "N/A",  # created
-                                    table[7].strftime("%Y-%m-%d %H:%M")
-                                    if table[7]
-                                    else "N/A",  # last_altered
+                                    (
+                                        table[6].strftime("%Y-%m-%d %H:%M")
+                                        if table[6]
+                                        else "N/A"
+                                    ),  # created
+                                    (
+                                        table[7].strftime("%Y-%m-%d %H:%M")
+                                        if table[7]
+                                        else "N/A"
+                                    ),  # last_altered
                                 ]
                             )
 

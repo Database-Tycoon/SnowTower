@@ -127,11 +127,12 @@ class TestUserManagerIntegration:
         self.config_dir.mkdir(parents=True, exist_ok=True)
 
         # Mock components
-        with patch("user_management.manager.FernetEncryption") as mock_fernet, patch(
-            "user_management.manager.RSAKeyManager"
-        ) as mock_rsa, patch("user_management.manager.YAMLHandler") as mock_yaml, patch(
-            "user_management.manager.SnowDDLAccountManager"
-        ) as mock_snowddl:
+        with (
+            patch("user_management.manager.FernetEncryption") as mock_fernet,
+            patch("user_management.manager.RSAKeyManager") as mock_rsa,
+            patch("user_management.manager.YAMLHandler") as mock_yaml,
+            patch("user_management.manager.SnowDDLAccountManager") as mock_snowddl,
+        ):
             mock_fernet.return_value = MagicMock()
             mock_rsa.return_value = MagicMock()
             mock_yaml.return_value = MagicMock()

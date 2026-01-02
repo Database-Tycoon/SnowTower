@@ -84,9 +84,11 @@ class ResourceMonitorInvestigator:
                 "user": env_vars.get("SNOWFLAKE_USER"),
                 "role": env_vars.get("SNOWFLAKE_ROLE"),
                 "warehouse": env_vars.get("SNOWFLAKE_WAREHOUSE"),
-                "auth_method": "rsa_key"
-                if env_vars.get("SNOWFLAKE_PRIVATE_KEY_PATH")
-                else "password",
+                "auth_method": (
+                    "rsa_key"
+                    if env_vars.get("SNOWFLAKE_PRIVATE_KEY_PATH")
+                    else "password"
+                ),
             }
 
             self.logger.info(
@@ -229,9 +231,9 @@ class ResourceMonitorInvestigator:
                 "status": "success",
                 "details": "Successfully connected to Snowflake",
                 "output": stdout.strip(),
-                "available_connections": conn_stdout
-                if conn_success
-                else "Could not retrieve connections",
+                "available_connections": (
+                    conn_stdout if conn_success else "Could not retrieve connections"
+                ),
             }
             self.console.print("[green]✓[/green] Snowflake connectivity test passed")
             return True
@@ -240,9 +242,9 @@ class ResourceMonitorInvestigator:
                 "status": "failed",
                 "details": f"Connection failed: {stderr}",
                 "error": stderr,
-                "available_connections": conn_stdout
-                if conn_success
-                else "Could not retrieve connections",
+                "available_connections": (
+                    conn_stdout if conn_success else "Could not retrieve connections"
+                ),
                 "troubleshooting": self._generate_auth_troubleshooting(stderr),
             }
             self.console.print("[red]✗[/red] Snowflake connectivity test failed")
@@ -341,7 +343,9 @@ class ResourceMonitorInvestigator:
 """
 
         self.console.print(
-            Panel(content, title="🚨 Authentication Troubleshooting", border_style="red")
+            Panel(
+                content, title="🚨 Authentication Troubleshooting", border_style="red"
+            )
         )
 
     def check_existing_monitors(self) -> bool:
@@ -781,7 +785,9 @@ class ResourceMonitorInvestigator:
             if self.results["safe_to_deploy"] is True:
                 summary.append("🟢 **APPROVED** - Deployment appears safe")
             elif self.results["safe_to_deploy"] == "conditional":
-                summary.append("🟡 **CONDITIONAL** - Address warnings before deployment")
+                summary.append(
+                    "🟡 **CONDITIONAL** - Address warnings before deployment"
+                )
             else:
                 summary.append(
                     "🔴 **NOT APPROVED** - Fix critical issues before deployment"
