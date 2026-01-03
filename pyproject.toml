@@ -105,6 +105,10 @@ generate-rsa-batch = "scripts.generate_rsa_keys_batch:main"
 github-to-snowddl = "src.management_cli:github_to_snowddl"
 process-access-request = "src.management_cli:process_access_request"
 
+# === TERRAFORM GENERATION ===
+# Generate Terraform configuration from SnowDDL YAML files
+generate-terraform = "src.management_cli:generate_terraform"
+
 # === DOCUMENTATION ===
 # Commands for documentation management
 docs-serve = "src.docs_commands:serve_docs"
