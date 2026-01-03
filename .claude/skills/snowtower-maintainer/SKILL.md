@@ -193,6 +193,60 @@ This skill works with:
 - **Documentation**: `docs/`
 - **Claude config**: `.claude/`
 
+## Release Planning
+
+### Identify What Goes in a Release
+
+1. **Check open issues:**
+   ```bash
+   gh issue list --state open --label P1
+   gh issue list --state open
+   ```
+
+2. **Review workspace roadmap:**
+   - Check `/Users/ssciortino/Projects/snowtower-workspace/CLAUDE.md` for:
+     - "Strategic Recommendations & Next Steps" section
+     - Priority 1/2/3 items
+     - Technical debt to address
+
+3. **Gather completed work since last release:**
+   ```bash
+   git log v0.X..main --oneline
+   ```
+
+### Create Version Branch
+
+```bash
+# Create and push version branch
+git checkout main
+git pull origin main
+git checkout -b v0.X
+git push -u origin v0.X
+```
+
+### Pre-Release Checklist
+
+1. **Run full test suite:** `uv run pytest`
+2. **Update CHANGELOG.md** with new features
+3. **Verify README is current** (badges, commands, stats)
+4. **Check documentation links** resolve correctly
+5. **Create PR to main** with release summary
+
+### Release Workflow
+
+```bash
+# After PR is merged
+git checkout main
+git pull
+gh release create vX.Y --title "vX.Y - Title" --notes "..."
+```
+
+### Version Naming
+
+- **v0.X**: Pre-1.0 development releases
+- **v1.0**: First stable release (target: installable CLI)
+- **vX.Y.Z**: Semantic versioning post-1.0
+
 ## When to Trigger
 
 Invoke this skill when:
@@ -203,3 +257,5 @@ Invoke this skill when:
 - After significant feature additions
 - Before releases to ensure docs are current
 - When onboarding new contributors
+- **User asks to plan a new release version**
+- **User wants to start work on vX.Y**
