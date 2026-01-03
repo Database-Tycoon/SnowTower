@@ -226,6 +226,16 @@ def github_to_snowddl():
     main()
 
 
+# === TERRAFORM GENERATION ===
+
+
+def generate_terraform():
+    """Generate Terraform configuration from SnowDDL YAML files."""
+    from generate_terraform import main
+
+    main()
+
+
 if __name__ == "__main__":
     print("Use 'uv run <command>' where command includes:")
     print("  Core: warehouses, costs, security, backup, users")
