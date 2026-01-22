@@ -629,6 +629,7 @@ This project includes Claude Code skills for AI-assisted workflows:
 |-------|---------|----------|
 | [snowtower-user](.claude/skills/snowtower-user/) | End-user guide | Requesting access, connecting to Snowflake |
 | [snowtower-admin](.claude/skills/snowtower-admin/) | Admin operations | SnowDDL deployments, user management, troubleshooting |
+| [snowtower-developer](.claude/skills/snowtower-developer/) | Code contributions | Adding features, fixing bugs, writing tests, submitting PRs |
 | [snowtower-maintainer](.claude/skills/snowtower-maintainer/) | Project maintenance | README updates, documentation sync |
 
 ### Full Documentation
