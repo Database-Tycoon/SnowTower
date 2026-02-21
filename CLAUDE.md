@@ -8,10 +8,12 @@
 # Essential commands
 uv run snowddl-plan      # Preview infrastructure changes
 uv run snowddl-apply     # Apply changes (needs confirmation)
+uv run deploy-safe       # Safe deployment (preserves schema grants)
 uv run manage-users      # User management
 uv run manage-warehouses # Warehouse management
 uv run manage-costs      # Cost analysis
 uv sync                  # Install dependencies
+uv run pytest            # Run tests
 ```
 
 ## Critical Rules
@@ -41,11 +43,11 @@ snowtower-snowddl/
 │   ├── snowddl_core/  # OOP framework
 │   └── management_cli.py  # CLI entry points
 ├── scripts/           # Management scripts
+├── tests/             # Test suite
 ├── docs/              # Documentation
 │   ├── guide/         # User guides
 │   ├── contributing/  # Developer docs
-│   ├── llm-context/   # LLM configuration
-│   └── ...
+│   └── releases/      # Release docs
 └── pyproject.toml     # UV/Python config
 ```
 
@@ -104,6 +106,47 @@ The `--env-prefix` parameter adds a prefix to all object names (databases, schem
 
 **Must use `-r ACCOUNTADMIN`** to see all grants across roles/schemas when running plan.
 
+### SnowDDL Object Type Reference
+
+| Object Type | Grant Key | Example |
+|------------|-----------|---------|
+| Database | `DATABASE:` | `DATABASE:USAGE,CREATE SCHEMA` |
+| Schema | `SCHEMA:` | `SCHEMA:USAGE,CREATE TABLE` |
+| Table | `TABLE:` | `TABLE:SELECT,INSERT` |
+| View | `VIEW:` | `VIEW:SELECT` |
+| Warehouse | `WAREHOUSE:` | `WAREHOUSE:USAGE,OPERATE` |
+| Stage | `STAGE:` | `STAGE:USAGE,READ,WRITE` |
+| Function | `FUNCTION:` | `FUNCTION:USAGE` |
+| Procedure | `PROCEDURE:` | `PROCEDURE:USAGE` |
+
+### Role Types and Naming
+
+SnowDDL automatically creates roles with specific suffixes:
+
+| Role Type | Suffix | Purpose | Example |
+|-----------|--------|---------|---------|
+| User Role | `__U_ROLE` | Per-user role | `DLT__U_ROLE` |
+| Technical Role | `__T_ROLE` | Service/app permissions | `DLT_STRIPE_TECH_ROLE__T_ROLE` |
+| Business Role | `__B_ROLE` | Logical groupings | `DLT_STRIPE_ROLE__B_ROLE` |
+| Schema Owner | `__S_ROLE` | Object ownership | `SOURCE_STRIPE__STRIPE_WHY__OWNER__S_ROLE` |
+| Database Owner | `__D_ROLE` | Database-level ownership | `SOURCE_STRIPE__OWNER__D_ROLE` |
+
+### Role Hierarchy (RBAC)
+
+```
+ACCOUNTADMIN (top-level)
+    ↓
+SYSADMIN → USERADMIN → SECURITYADMIN
+    ↓           ↓            ↓
+Business Roles (__B_ROLE)
+    ↓
+Technical Roles (__T_ROLE)
+    ↓
+Object Permissions
+```
+
+**Inheritance**: User → User Role (__U_ROLE) → Business Role (__B_ROLE) → Technical Role (__T_ROLE) + Schema Owner (__S_ROLE)
+
 ### Schema Grants in SnowDDL
 
 Schema grants are defined in `tech_role.yaml` using `SCHEMA:<privilege>` format:
@@ -112,13 +155,11 @@ Schema grants are defined in `tech_role.yaml` using `SCHEMA:<privilege>` format:
 # tech_role.yaml
 DBT_STRIPE_ROLE:
   grants:
-    # Schema-level grants (the key insight!)
     SCHEMA:USAGE:
       - SOURCE_STRIPE.STRIPE_WHY
       - PROJ_STRIPE.PROJ_STRIPE
     SCHEMA:CREATE TABLE,CREATE VIEW,MODIFY:
       - PROJ_STRIPE.PROJ_STRIPE
-    # Database grants
     DATABASE:USAGE,CREATE SCHEMA:
       - SOURCE_STRIPE
       - PROJ_STRIPE
@@ -157,6 +198,7 @@ The "schema drift" issue occurs when:
 - [Schema Config](https://docs.snowddl.com/basic/yaml-configs/schema) - Schema params.yaml structure
 - [Technical Roles](https://docs.snowddl.com/basic/yaml-configs/technical-role) - Grant definitions
 - [Business Roles](https://docs.snowddl.com/basic/yaml-configs/business-role) - schema_read/write abstractions
+- [Permission Model](https://docs.snowddl.com/basic/yaml-configs/permission-model) - Permission models
 - [Env Prefix Guide](https://docs.snowddl.com/guides/other-guides/env-prefix) - Environment separation
 
 ## Setting Up dbt Projects (CRITICAL)
@@ -203,15 +245,6 @@ GRANT OWNERSHIP ON ALL VIEWS IN SCHEMA <DB>.<SCHEMA>
   TO ROLE <DB>__<SCHEMA>__OWNER__S_ROLE COPY CURRENT GRANTS;
 ```
 
-**Real example for PROJ_STRIPE.PROJ_STRIPE:**
-```sql
-GRANT OWNERSHIP ON ALL TABLES IN SCHEMA PROJ_STRIPE.PROJ_STRIPE
-  TO ROLE PROJ_STRIPE__PROJ_STRIPE__OWNER__S_ROLE COPY CURRENT GRANTS;
-
-GRANT OWNERSHIP ON ALL VIEWS IN SCHEMA PROJ_STRIPE.PROJ_STRIPE
-  TO ROLE PROJ_STRIPE__PROJ_STRIPE__OWNER__S_ROLE COPY CURRENT GRANTS;
-```
-
 ### Why This Works
 
 The grant chain after setup:
@@ -232,9 +265,49 @@ SQL access control error: View 'MY_VIEW' already exists, but current role has no
 
 **Fix:** Complete all 3 steps above.
 
+## DLT (Data Loading) Permission Patterns
+
+### The Table Stage Problem
+
+When DLT loads data, it uses `COPY INTO` with table stages. **Only the TABLE OWNER can access table stages.** If DLT doesn't own the tables, loading fails with:
+
+```
+SQL access control error: Insufficient privileges to operate on table stage 'CHARGE'
+```
+
+### Solution: Grant Schema Owner Role to Business Role
+
+```yaml
+# snowddl/business_role.yaml
+DLT_STRIPE_ROLE:
+  comment: DLT Stripe pipeline - includes schema owner for table stage access
+  tech_roles:
+    - DLT_STRIPE_TECH_ROLE
+  schema_owner:
+    - SOURCE_STRIPE.STRIPE_WHY  # Grants SOURCE_STRIPE__STRIPE_WHY__OWNER__S_ROLE
+  warehouse_usage:
+    - DLT
+```
+
+**Why this works**: `schema_owner` grants the auto-created `__OWNER__S_ROLE` to the business role. The user inherits through: User Role → Business Role → Schema Owner Role → table stage access.
+
+**What doesn't work**: Technical roles don't support `schema_owner`. You must use business roles.
+
+## Environment Variables
+
+Required in `.env`:
+```
+SNOWFLAKE_ACCOUNT=your_account
+SNOWFLAKE_USER=your_user
+SNOWFLAKE_PASSWORD=your_password  # Or use RSA key
+SNOWFLAKE_ROLE=ACCOUNTADMIN
+SNOWFLAKE_WAREHOUSE=COMPUTE_WH
+FERNET_KEY=your_fernet_key  # For password encryption
+```
+
 ## For More Details
 
-- [Full LLM Instructions](docs/llm-context/CLAUDE.md)
-- [Project Context](docs/llm-context/CONTEXT.md)
-- [Code Patterns](docs/llm-context/PATTERNS.md)
 - [CLI Reference](docs/guide/MANAGEMENT_COMMANDS.md)
+- [Troubleshooting](docs/guide/TROUBLESHOOTING.md)
+- [Architecture](docs/guide/ARCHITECTURE.md)
+- [Service Account Pattern](.claude/patterns/SERVICE_ACCOUNT_CREATION_PATTERN.md)
