@@ -159,6 +159,16 @@ def update_user_password():
     update_user_password()
 
 
+# === CONFIGURATION VALIDATION ===
+
+
+def validate_config():
+    """Validate SnowDDL YAML configuration files before deployment."""
+    from validate_config import main
+
+    main()
+
+
 # === STREAMLIT TESTING COMMANDS ===
 
 
@@ -222,6 +232,13 @@ def monitor_metrics():
 def github_to_snowddl():
     """Automate GitHub issue to SnowDDL user deployment with PR creation."""
     from github_issue_to_snowddl import main
+
+    main()
+
+
+def generate_terraform():
+    """Generate Terraform HCL files from SnowDDL YAML configurations."""
+    from generate_terraform import main
 
     main()
 

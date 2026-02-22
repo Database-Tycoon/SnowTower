@@ -50,6 +50,7 @@ dev = [
     # API documentation generation
     "mkdocstrings[python]>=0.24.0",
     "mkdocstrings-python>=1.8.0",
+    "detect-secrets>=1.5.0",
 ]
 
 [build-system]
@@ -85,6 +86,7 @@ manage-security = "src.management_cli:security"
 manage-backup = "src.management_cli:backup"
 apply-schema-grants = "src.management_cli:apply_schema_grants"
 validate-schema-grants = "src.management_cli:validate_schema_grants"
+validate-config = "src.management_cli:validate_config"
 test-schema-mgmt = "scripts.test_schema_management:main"
 
 # === MONITORING & OBSERVABILITY ===
@@ -99,6 +101,10 @@ util-generate-key = "src.user_management.cli:generate_fernet_key"
 util-diagnose-auth = "src.diagnose_auth:main"
 util-fix-auth = "src.fix_auth:main"
 generate-rsa-batch = "scripts.generate_rsa_keys_batch:main"
+
+# === TERRAFORM GENERATION ===
+# Convert SnowDDL YAML to Terraform HCL
+generate-terraform = "src.management_cli:generate_terraform"
 
 # === AUTOMATION ===
 # GitHub issue to SnowDDL automation with PR creation
