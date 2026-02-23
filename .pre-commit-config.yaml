@@ -37,6 +37,14 @@ repos:
         pass_filenames: false
         always_run: false
 
+      - id: validate-config
+        name: Validate SnowDDL YAML Configs
+        entry: uv run validate-config --quiet
+        language: system
+        files: ^snowddl/.*\.yaml$
+        pass_filenames: false
+        always_run: false
+
   - repo: https://github.com/psf/black
     rev: 24.4.2  # Updated from 23.12.1 - stable version compatible with Python 3.12.5
     hooks:

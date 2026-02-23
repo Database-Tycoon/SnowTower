@@ -24,7 +24,7 @@ JOHN_ANALYST:
   email: john.analyst@example.com
   first_name: John
   last_name: Analyst
-  default_role: ANALYST__B_ROLE
+  default_role: COMPANY_USERS__B_ROLE
   comment: Data analyst
 
 # =============================================================================
@@ -46,7 +46,7 @@ DLT_SERVICE:
     MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA0example...
     ...replace with your actual RSA public key...
     AQAB
-  default_role: DLT_INGESTION_ROLE__B_ROLE
+  default_role: DLT_STRIPE_ROLE__B_ROLE
   comment: Data ingestion service account
 
 # =============================================================================
