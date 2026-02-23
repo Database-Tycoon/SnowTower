@@ -10,8 +10,6 @@
 | Fix schema permissions | [Schema Grants](guide/SCHEMA_GRANTS.md) |
 | Troubleshoot issues | [Troubleshooting](guide/TROUBLESHOOTING.md) |
 | View the changelog | [Changelog](releases/CHANGELOG.md) |
-| Use LLMs with this repo | [LLM Context](llm-context/) |
-
 ---
 
 ## Guide
@@ -38,17 +36,6 @@ All user-facing documentation.
 **Security**
 - [Security Notice](guide/SECURITY_NOTICE.md) - RSA key storage best practices
 - [Schema Grants](guide/SCHEMA_GRANTS.md) - Managing schema-level permissions
-
----
-
-## LLM Context
-
-Configuration files for using LLMs with this codebase.
-
-- [README](llm-context/README.md) - Overview and quick start
-- [CLAUDE.md](llm-context/CLAUDE.md) - Full project instructions for Claude
-- [CONTEXT.md](llm-context/CONTEXT.md) - Domain knowledge and project context
-- [PATTERNS.md](llm-context/PATTERNS.md) - Code patterns and conventions
 
 ---
 
